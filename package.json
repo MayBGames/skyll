@@ -19,7 +19,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "del": "^2.0.2",
-    "gulp": "gulpjs/gulp#4ed9a4a3275559c73a396eff7e1fde3824951ebb",
+    "gulp": "github:gulpjs/gulp#4.0",
     "gulp-coffee": "^2.3.3",
     "gulp-coveralls": "^0.1.0",
     "gulp-eslint": "^3.0.1",
