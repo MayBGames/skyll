@@ -14,3 +14,5 @@ gulp.task('default', gulp.series(
   'run-tests',
   'coveralls'
 ));
+
+gulp.task('prepublish', function () {return null;});
