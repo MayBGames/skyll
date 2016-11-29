@@ -7,7 +7,8 @@ exports.paths = {
   tmp: '.tmp',
   dist: 'dist',
   test: 'test',
-  tasks: 'gulp-tasks'
+  tasks: 'gulp-tasks',
+  coverage: 'coverage'
 };
 
 exports.path = {};

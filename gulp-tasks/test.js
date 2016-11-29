@@ -20,7 +20,7 @@ gulp.task('pre-test', function preTest() {
 
 gulp.task('run-tests', function runTests(cb) {
   var mochaErr;
-  console.log('run-tests ' + conf.path.tmp('**/*.spec.js'));
+
   gulp.src(conf.path.tmp('**/*.spec.js'))
     .pipe(plumber())
     .pipe(mocha({reporter: 'spec'}))
@@ -38,6 +38,6 @@ gulp.task('coveralls', function runCoveralls() {
     return;
   }
 
-  return gulp.src('../coverage/lcov.info')
+  return gulp.src(conf.path.coverage('lcov.info'))
     .pipe(coveralls());
 });
