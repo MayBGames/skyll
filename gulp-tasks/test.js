@@ -38,6 +38,6 @@ gulp.task('coveralls', function runCoveralls() {
     return;
   }
 
-  return gulp.src(path.join(__dirname, 'coverage/lcov.info'))
+  return gulp.src('../coverage/lcov.info')
     .pipe(coveralls());
 });
