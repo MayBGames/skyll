@@ -9,6 +9,7 @@
     ctx        = canvas.getContext '2d'
 
     pathfinders = [ ]
+    to_delete = [ ]
 
     grid = ((false for j in [0..board.cols]) for i in [0..board.rows])
 
@@ -92,7 +93,7 @@
               direction: pathfinder.current.direction
             steps: 0
           if Math.random() < 0.5 && pathfinders.length > 1
-            pathfinders.splice index, 1
+            to_delete.push index
           else
             if pathfinder.previous.direction == directions.UP
               ++pathfinder.steps
@@ -108,7 +109,7 @@
               direction: pathfinder.current.direction
             steps: 0
           if Math.random() < 0.5 && pathfinders.length > 1
-            pathfinders.splice index, 1
+            to_delete.push index
           else
             if pathfinder.previous.direction == directions.DOWN
               ++pathfinder.steps
@@ -128,6 +129,13 @@
       for pathfinder, i in pathfinders
         if pathfinder?.current?.col < board.cols
           walk pathfinder, i
+
+      to_delete
+        .sort()
+        .reverse()
+        .forEach (d) -> to_delete.splice d, 1
+
+      to_delete = [ ]
 
     for row, r in grid
       for col, c in row
