@@ -3,7 +3,7 @@
     Canvas = require 'canvas'
 
     cell       = width: 8 * 2, height: 7 * 2
-    board      = cols: 500, rows: 50
+    board      = cols: 50, rows: 15
     dimensions = width: cell.width * board.cols, height: cell.height * board.rows
     canvas     = new Canvas dimensions.width, dimensions.height
     ctx        = canvas.getContext '2d'
