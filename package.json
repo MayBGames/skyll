@@ -43,5 +43,8 @@
     "prepublish": "gulp prepublish",
     "test": "gulp"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "canvas": "^1.6.2"
+  }
 }
