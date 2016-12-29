@@ -7,7 +7,6 @@ gulp.registry(hub);
 
 gulp.task('default', gulp.series(
   'clean',
-  'nsp',
   'brew-code',
   'brew-tests',
   'pre-test',
@@ -15,4 +14,6 @@ gulp.task('default', gulp.series(
   'coveralls'
 ));
 
-gulp.task('prepublish', function () {return null;});
+gulp.task('compile', gulp.series('clean', 'brew-code'));
+
+gulp.task('prepublish', gulp.series('nsp'));
