@@ -38,16 +38,16 @@
           @previous_direction = @directions[dir]
           @steps = 0
 
-      neighor: (x = 0, y = 0) => @grid[@row + x][@col + y]
+      neighbor: (x = 0, y = 0) => @grid[@row + x][@col + y]
 
       carve_path: =>
         neighbors = [ ]
         direction = undefined
 
-        neighbors.push 'UP'    if @row > 0               && @neighor(-1,  0) == false
-        neighbors.push 'DOWN'  if @row < @board.rows - 2 && @neighor( 1,  0) == false
-        neighbors.push 'LEFT'  if @col > 0               && @neighor( 0, -1) == false
-        neighbors.push 'RIGHT' if @col < @board.cols     && @neighor( 0,  1) == false
+        neighbors.push 'UP'    if @row > 0               && @neighbor(-1,  0) == false
+        neighbors.push 'DOWN'  if @row < @board.rows - 2 && @neighbor( 1,  0) == false
+        neighbors.push 'LEFT'  if @col > 0               && @neighbor( 0, -1) == false
+        neighbors.push 'RIGHT' if @col < @board.cols     && @neighbor( 0,  1) == false
 
         if neighbors.length > 0
           o = [ ]
