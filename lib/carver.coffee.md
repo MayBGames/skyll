@@ -23,8 +23,10 @@
       direct_me: (options) =>
         chance = Math.random()
 
-        for o in options
-          return Object.keys(o)[0] if o[Object.keys(o)[0]] > chance
+        for option in options
+          neighbor = Object.keys(option)[0]
+
+          return neighbor if option[neighbor] > chance
 
       update_steps: (dir) =>
         if @previous_direction?
