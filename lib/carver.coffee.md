@@ -62,7 +62,7 @@
 
           direction = @direct_me o
         else
-          direction = 'RIGHT' if direction != 'RIGHT'
+          direction = 'RIGHT'
 
         switch @directions[direction]
           when @directions.RIGHT then @grid[@row][++@col] = true
