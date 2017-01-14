@@ -45,6 +45,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "canvas": "^1.6.2"
+    "canvas": "^1.6.2",
+    "microtime": "^2.1.2",
+    "prettyjson": "^1.2.1",
+    "q": "^1.4.1",
+    "winston": "^2.3.0"
   }
 }
