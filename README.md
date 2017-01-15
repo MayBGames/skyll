@@ -1,22 +1,16 @@
 # skyll [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 > Procedural goodness
 
-## Installation
+## Installation & usage
 
 ```sh
-$ npm install --save skyll
+$ npm install skyll
+$ skyll --help
 ```
 
-## Usage
-
-```js
-var skyll = require('skyll');
-
-skyll('Rainbow');
-```
 ## License
 
-MIT © [Bryan Maynard]()
+MIT © [Bryan Maynard](https://bsgbryan.com)
 
 
 [npm-image]: https://badge.fury.io/js/skyll.svg
