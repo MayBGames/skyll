@@ -2,14 +2,14 @@
   "name": "skyll",
   "version": "0.0.0",
   "bin": {
-    "skyll": ".tmp/index.js"
+    "skyll": ".tmp/cli.js"
   },
   "description": "Procedural goodness",
   "homepage": "",
   "author": {
     "name": "Bryan Maynard",
     "email": "bsgbryan@gmail.com",
-    "url": ""
+    "url": "https://bsgbryan.com"
   },
   "files": [
     "dist"
