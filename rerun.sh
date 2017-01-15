@@ -1,3 +1,3 @@
 gulp compile
 npm link
-skyll -vvvvvvvv
+skyll -vvvv
