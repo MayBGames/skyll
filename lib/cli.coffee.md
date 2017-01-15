@@ -35,7 +35,7 @@
         height:     7
         multiplier: 2
       .help 'help'
-      .epilogue '© Bryan Maynard 2017'
+      .epilogue '© Bryan Maynard 2016'
       .argv
 
     levels = if argv._.length > 0 then argv._ else [ new Date().toString() ]
