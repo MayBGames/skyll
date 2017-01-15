@@ -13,6 +13,7 @@
       previous_direction: undefined
       farthest_right:     0
       total_distance:     0
+      director:           undefined
 
       directions:
         LEFT:  0
@@ -20,13 +21,10 @@
         UP:    2
         DOWN:  3
 
-      direct_me: (options) =>
-        chance = Math.random()
+      initialize: (params) =>
+        @[key] = val for key, val of params
 
-        for option in options
-          neighbor = Object.keys(option)[0]
-
-          return neighbor if option[neighbor] > chance
+        super()
 
       update_steps: (dir) =>
         if @previous_direction?
@@ -42,27 +40,13 @@
 
       carve_path: =>
         neighbors = [ ]
-        direction = undefined
 
         neighbors.push 'UP'    if @row > 0               && @neighbor(-1,  0) == false
         neighbors.push 'DOWN'  if @row < @board.rows - 2 && @neighbor( 1,  0) == false
         neighbors.push 'LEFT'  if @col > 0               && @neighbor( 0, -1) == false
         neighbors.push 'RIGHT' if @col < @board.cols     && @neighbor( 0,  1) == false
 
-        if neighbors.length > 0
-          o = [ ]
-
-          for n in [1..(neighbors.length / 1)]
-            c = 1 / neighbors.length
-
-            if neighbors[n - 1] == 'RIGHT'
-              o.push "#{neighbors[n - 1]}": ((c * n) * ((2 / c) * 0.5)) * c
-            else
-              o.push "#{neighbors[n - 1]}": ((c * n) * (0.5 / c)) * c
-
-          direction = @direct_me o
-        else
-          direction = 'RIGHT'
+        direction = if neighbors.length > 0 then @director neighbors else 'RIGHT'
 
         switch @directions[direction]
           when @directions.RIGHT then @grid[@row][++@col] = true
@@ -72,6 +56,7 @@
           when undefined         then @debug 'Nowhere to go', row: @row, col: @col
 
         @update_steps direction
+
         @farthest_right = @col if @col > @farthest_right
 
         if @farthest_right < @board.cols

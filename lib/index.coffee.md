@@ -14,12 +14,28 @@
     farthest_right = 0
 
     new Carver()
-      .initialize()
-      .then (mod) ->
-        mod.row   = Math.floor board.rows / 2
-        mod.grid  = grid
-        mod.board = board
+      .initialize
+        row:      Math.floor board.rows / 2
+        grid:     grid
+        board:    board
+        director: (neighbors) ->
+          o = [ ]
 
+          for n in [1..(neighbors.length / 1)]
+            c = 1 / neighbors.length
+
+            if neighbors[n - 1] == 'RIGHT'
+              o.push "#{neighbors[n - 1]}": ((c * n) * ((2 / c) * 0.5)) * c
+            else
+              o.push "#{neighbors[n - 1]}": ((c * n) * (0.5 / c)) * c
+
+          chance = Math.random()
+
+          for option in o
+            neighbor = Object.keys(option)[0]
+
+            return neighbor if option[neighbor] > chance
+      .then (mod) ->
         grid[mod.row][mod.col] = true
 
         mod.carve_path().then (p) ->
