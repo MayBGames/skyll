@@ -1,6 +1,9 @@
 {
   "name": "skyll",
   "version": "0.0.0",
+  "bin": {
+    "skyll": ".tmp/index.js"
+  },
   "description": "Procedural goodness",
   "homepage": "",
   "author": {
@@ -49,6 +52,8 @@
     "microtime": "^2.1.2",
     "prettyjson": "^1.2.1",
     "q": "^1.4.1",
-    "winston": "^2.3.0"
+    "uuid-1345": "^0.99.6",
+    "winston": "^2.3.0",
+    "yargs": "^6.6.0"
   }
 }
