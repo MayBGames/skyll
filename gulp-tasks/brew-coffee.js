@@ -5,7 +5,7 @@ const conf = require('../gulp-conf/base');
 gulp.task('brew-code', function brewCode() {
   return gulp.src(conf.path.lib('**/*.coffee.md'), { sourcemaps: true })
     .pipe(coffee({ bare: true }))
-    .pipe(gulp.dest(conf.path.tmp()));
+    .pipe(gulp.dest(conf.path.dist()));
   }
 );
 
