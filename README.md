@@ -1,23 +1,30 @@
-# skyll [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
-> Procedural goodness
+# Skyll
 
-## Installation & usage
+A procedural level generator for 2/2.5d platformers
+
+# Install & Use
 
 ```sh
 $ npm install skyll
 $ skyll --help
 ```
 
+# Goal
+
+Skyll is intended to help make autoring levels to 2/2.5d platformers easier.
+
+The idea is that Skyll will do this by handling the grunt work of carving a path,
+placing ground blocks & obstacles, and positioning enemies & collectables -
+allowing designers to focus on higher level concerns like what types of collectables,
+enemies, and obstacles to include as well as the difficulty, rhythm, and flow
+of the level.
+
+Curretly Skyll is extrenely basic - it only carves a path through a grid of
+available blocks. It is also only usable as an executable.
+
+In the near future Skyll will be usable via the `skyll` executable as well as the
+`skyll` module which may be required and used like any other node module.
+
 ## License
 
 MIT © [Bryan Maynard](https://bsgbryan.com)
-
-
-[npm-image]: https://badge.fury.io/js/skyll.svg
-[npm-url]: https://npmjs.org/package/skyll
-[travis-image]: https://travis-ci.org/bsgbryan/skyll.svg?branch=master
-[travis-url]: https://travis-ci.org/bsgbryan/skyll
-[daviddm-image]: https://david-dm.org/bsgbryan/skyll.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/bsgbryan/skyll
-[coveralls-image]: https://coveralls.io/repos/bsgbryan/skyll/badge.svg
-[coveralls-url]: https://coveralls.io/r/bsgbryan/skyll
