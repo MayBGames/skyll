@@ -1,7 +1,3 @@
-# Skyll
-
-A procedural level generator for 2/2.5d platformers
-
 # Install & Use
 
 ```sh
