@@ -42,19 +42,17 @@
 
     process.env.CGAPI_LOG_LEVEL = argv.verbosity
 
-    fs     = require 'fs'
     path   = require 'path'
-    Canvas = require 'canvas'
     Carver = require './carver'
+
+    PngPersister = require './persisters/png-persister'
 
     cell       = width: argv.w * argv.x, height: argv.h * argv.x
     board      = cols: argv.c, rows: argv.r
     dimensions = width: cell.width * board.cols, height: cell.height * board.rows
 
     render = (level, index) ->
-      grid   = ((false for j in [0..board.cols]) for i in [0..board.rows])
-      canvas = new Canvas dimensions.width, dimensions.height
-      ctx    = canvas.getContext '2d'
+      grid = ((false for j in [0..board.cols]) for i in [0..board.rows])
 
       new Carver()
         .initialize
@@ -81,22 +79,18 @@
         .then (mod) ->
           grid[mod.row][mod.col] = true
 
-          mod.carve_path().then (steps) ->
-            console.log level, "--> #{steps.length} total steps"
+          mod.carve_path()
+        .then (steps) ->
+          new PngPersister()
+            .initialize
+              dimensions:  dimensions
+              cell_width:  cell.width
+              cell_height: cell.height
+            .then (png) ->
+              name = path.join __dirname, '..', 'output', "#{level}.png"
+              next = index + 1
 
-            for step in steps
-              ctx.beginPath()
-              ctx.rect cell.width * step.col, cell.height * step.row, cell.width, cell.height
-              ctx.fillStyle = 'white'
-              ctx.fill()
-              ctx.lineWidth = 1
-              ctx.strokeStyle = 'black'
-              ctx.stroke()
-
-            canvas
-              .createPNGStream()
-              .pipe fs.createWriteStream path.join __dirname, '..', 'output', "#{level}.png"
-
-            render levels[index + 1], index + 1 if index + 1 < levels.length
+              png.persist name, steps
+        .then -> render levels[next], next if next < levels.length
 
     render levels[0], 0
