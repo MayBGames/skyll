@@ -40,7 +40,7 @@
 
     levels = if argv._.length > 0 then argv._ else [ new Date().toString() ]
 
-    process.env.CGAPI_LOG_LEVEL = argv.verbose
+    process.env.CGAPI_LOG_LEVEL = argv.verbosity
 
     fs     = require 'fs'
     path   = require 'path'
