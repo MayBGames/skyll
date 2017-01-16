@@ -4,8 +4,8 @@
   "bin": {
     "skyll": "dist/cli.js"
   },
-  "description": "Procedural goodness",
-  "homepage": "",
+  "description": "A procedural level generator for 2/2.5d platformers",
+  "homepage": "http://bsgbryan.com/skyll/",
   "author": {
     "name": "Bryan Maynard",
     "email": "bsgbryan@gmail.com",
@@ -16,7 +16,9 @@
   ],
   "main": "dist/index.js",
   "keywords": [
-    "procedural generation"
+    "procedural generation",
+    "platformer level generator",
+    "game level framework"
   ],
   "devDependencies": {
     "chai": "^3.5.0",
