@@ -17,7 +17,7 @@ title: Skyll
 email: bsgbryan@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Skyll is a procedural level generator for 2/2.5d platformers
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/skyll" # the subpath of your site, e.g. /blog
 url: "https://bsgbryan.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: bsgbryan
 github_username:  bsgbryan
