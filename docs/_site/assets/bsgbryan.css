@@ -1,0 +1,38 @@
+hr.my-4, hr.my-2, #content hr { border-top: 1px solid rgba(208, 208, 240, 0.25); }
+
+.jumbotron { background-color: #FFF7FF; box-shadow: 2px 4px 0 #ffe3d4, 4px 8px 0 #fff3bb; margin-top: 2rem; }
+.jumbotron h1.display-1 { text-shadow: 2px 4px 0 #bbbbff, 4px 8px 0 #ddddff; color: #2f2f40; }
+.jumbotron p.lead { letter-spacing: 1px; color: #b2a35f; }
+
+.nav .nav-link { text-transform: lowercase; letter-spacing: 1px; color: #8cb7dd; }
+.nav .nav-link.active { color: #aed9ff; }
+
+.footer.container { margin-top: 4rem; margin-bottom: 2rem; }
+.footer .fa:hover { text-decoration: none; }
+
+.card-deck { margin-bottom: 2rem; }
+.card-deck .card { background-color: #EFFDFF; box-shadow: 1.5px 3px 0 #ffe3d4, 3px 6px 0 #fff3bb; margin-top: 2rem; border: none; }
+.card-deck .card p.card-text { color: #7171b2; }
+.card-deck .card h4.card-title { color: #2f2f40; text-shadow: 1px 2px 0 rgba(187, 187, 255, 0.5), 2px 4px 0 rgba(221, 221, 255, 0.5); }
+.card-deck .card-footer { border-top: none; background-color: rgba(255, 243, 187, 0.1); }
+.card-deck .card-footer small.text-muted { color: #93CC81 !important; text-transform: uppercase; }
+
+span.btn-primary { color: #aed9ff; }
+span.btn-primary:hover { cursor: default; }
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited { background-color: transparent; border-color: #aed9ff; color: #8cb7dd; }
+.btn-primary:focus, .btn-primary:hover:focus, .btn-primary:active:focus, .btn-primary:visited:focus { box-shadow: none; }
+
+.footer a.fa { text-shadow: 0.5px 1px 0 #ffe3d4, 1px 2px 0 #fff3bb; color: #8cb7dd; }
+
+#content { margin-top: 2rem; }
+#content h1, #content h2, #content h3 { text-shadow: 1px 2px 0 rgba(187, 187, 255, 0.5), 2px 4px 0 rgba(221, 221, 255, 0.5); color: #2f2f40; }
+#content p { color: #7171b2; }
+#content p a { color: #8cb7dd; }
+#content p + h1, #content p + h2, #content p + h3 { margin-top: 2rem; }
+
+.language-sh { margin-top: 2rem; margin-bottom: 2rem; }
+.language-sh .highlight { padding: 1rem 1.5rem; background-color: #f5f5f9; color: #75759a; }
+.language-sh .highlight .gp { color: #b0b0c5; }
+
+@media (max-width: 575px) { .jumbotron h1.display-1 { font-size: 4rem; } }

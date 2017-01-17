@@ -1,0 +1,13 @@
+<ul class="col-12 nav justify-content-center">
+  {% for nav in site.data.nav %}
+    {% if nav.title == page.title %}
+      <li class="nav-item">
+        <a class="nav-link active" href="{{ nav.href }}">{{ nav.title }}</a>
+      </li>
+    {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ nav.href }}">{{ nav.title }}</a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>

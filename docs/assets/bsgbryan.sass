@@ -1,0 +1,155 @@
+---
+---
+
+// COLOR THEME:
+// https://color.adobe.com/create/color-wheel/?base=2&rule=Complementary&selected=4&name=My%20Color%20Theme&mode=rgb&rgbvalues=0.4433333333333333,0.44333333333339164,0.7,0.8333333333333333,0.8333333333333712,1,0.7333333333333333,0.7333333333333333,1,0.7,0.6407258064514811,0.37333333333333324,1,0.9516129032256989,0.7333333333333333&swatchOrder=0,1,2,3,4
+
+$page-shadow-front-color: rgba(187, 187, 255, 1)
+$page-shadow-back-color:  rgba(221, 221, 255, 1)
+
+$heading-shadow-front-color: transparentize($page-shadow-front-color, 0.5)
+$heading-shadow-back-color:  transparentize($page-shadow-back-color,  0.5)
+
+$heading-text-shadow: 1px 2px 0 $heading-shadow-front-color, 2px 4px 0 $heading-shadow-back-color
+
+$box-shadow-front-color: rgb(255,227,212)
+$box-shadow-back-color:  rgb(255,243,187)
+
+$available-link-color:   rgb(140,183,221)
+$unavailable-link-color: rgb(174,217,255)
+$button-border-color:    $unavailable-link-color
+
+$primary-text-color: rgb(113,113,178)
+$heading-text-color: rgb(47,47,64)
+$lead-text-color:    rgb(178,163,95)
+
+$base-vertical-whitespace: 2rem
+
+$base-letter-spacing: 1px
+
+=shadow($mode, $n, $front, $back)
+  #{$mode}-shadow: #{$n}px #{$n * 2}px 0 $front, #{$n * 2}px #{$n * 4}px 0 $back
+
+
+
+hr.my-4,
+hr.my-2,
+#content hr,
+  border-top: 1px solid rgba(208, 208, 240, 0.25)
+
+
+.jumbotron
+  background-color: #FFF7FF
+  +shadow('box', 2, $box-shadow-front-color, $box-shadow-back-color)
+  margin-top: $base-vertical-whitespace
+
+  h1.display-1
+    +shadow('text', 2, $page-shadow-front-color, $page-shadow-back-color)
+    color: $heading-text-color
+
+  p.lead
+    letter-spacing: $base-letter-spacing
+    color: $lead-text-color
+
+
+.nav .nav-link
+  text-transform: lowercase
+  letter-spacing: $base-letter-spacing
+  color: $available-link-color
+
+  &.active
+    color: $unavailable-link-color
+
+
+.footer
+  &.container
+    margin-top: $base-vertical-whitespace * 2
+    margin-bottom: $base-vertical-whitespace
+
+  .fa:hover
+    text-decoration: none
+
+
+.card-deck
+  margin-bottom: $base-vertical-whitespace
+
+  .card
+    background-color: #EFFDFF
+    +shadow('box', 1.5, $box-shadow-front-color, $box-shadow-back-color)
+    margin-top: $base-vertical-whitespace
+    border: none
+
+    p.card-text
+      color: $primary-text-color
+
+    h4.card-title
+      color: $heading-text-color
+      +shadow('text', 1, $heading-shadow-front-color, $heading-shadow-back-color)
+
+  .card-footer
+    border-top: none
+    background-color: rgba(255, 243, 187, 0.1)
+
+    small.text-muted
+      color: #93CC81!important
+      text-transform: uppercase
+
+
+span.btn-primary
+  color: $unavailable-link-color
+
+  &:hover
+    cursor: default
+
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+  background-color: transparent
+  border-color: $button-border-color
+  color: $available-link-color
+
+  &:focus
+    box-shadow: none
+
+
+.footer a.fa
+  +shadow('text', 0.5, $box-shadow-front-color, $box-shadow-back-color)
+  color: $available-link-color
+
+
+#content
+  margin-top: $base-vertical-whitespace
+
+  h1, h2, h3
+    +shadow('text', 1, $heading-shadow-front-color, $heading-shadow-back-color)
+    color: $heading-text-color
+
+  p
+    color: $primary-text-color
+
+    a
+      color: $available-link-color
+
+    & + h1,
+    & + h2,
+    & + h3
+      margin-top: $base-vertical-whitespace
+
+
+.language-sh
+  margin-top:    $base-vertical-whitespace
+  margin-bottom: $base-vertical-whitespace
+  .highlight
+    padding: 1rem 1.5rem
+    background-color: lighten(#8C8CBF, 32%)
+    color: lighten(#5D5D7F, 10%)
+
+    .gp
+      color: lighten(#5D5D7F, 30%)
+
+
+@media (max-width: 575px)
+  .jumbotron h1.display-1
+    font-size: $base-vertical-whitespace * 2
