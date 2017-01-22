@@ -35,7 +35,7 @@
         columns:    50
         width:      8
         height:     7
-        multiplier: 2
+        multiplier: 4
         levels:     1
       .help 'help'
       .epilogue '© Bryan Maynard 2016'
