@@ -31,8 +31,10 @@
       persist: (name, path) =>
         ctx = @draw_to.getContext '2d'
 
-        ctx.font      = "#{Math.floor @cell_height * 0.5}pt Arial"
-        ctx.textAlign = 'center'
+        ctx.font        = "#{Math.floor @cell_height * 0.25}pt Arial"
+        ctx.textAlign   = 'center'
+        ctx.lineWidth   = @block_border_width
+        ctx.strokeStyle = 'red'
 
         for step, i in path
           ctx.beginPath()
@@ -43,11 +45,8 @@
           x = (@cell_width  * 0.5)  + (@cell_width  * step.col)
           y = (@cell_height * 0.75) + (@cell_height * step.row)
 
-          ctx.fillStyle = 'black'
+          ctx.fillStyle = @block_border_color
           ctx.fillText i, x, y
-          # ctx.lineWidth   = @block_border_width
-          # ctx.strokeStyle = @block_border_color
-          # ctx.stroke()
 
         stream = @fs.createWriteStream name
 
