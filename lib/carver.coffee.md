@@ -11,9 +11,11 @@
       path:  [ ]
 
       previous_direction: undefined
-      farthest_right:     0
       total_distance:     0
       director:           undefined
+      farthest_right:
+        row: 0
+        col: 0
 
       directions:
         LEFT:  0
@@ -23,6 +25,8 @@
 
       initialize: (params) =>
         @[key] = val for key, val of params
+
+        @farthest_right.row = @row if @row?
 
         super()
 
@@ -46,34 +50,42 @@
         neighbors.push 'LEFT'  if @col > 0               && @neighbor( 0, -1) == false
         neighbors.push 'RIGHT' if @col < @board.cols     && @neighbor( 0,  1) == false
 
-        direction = if neighbors.length > 0 then @director neighbors else 'RIGHT'
-
-        switch @directions[direction]
-          when @directions.RIGHT then @grid[@row][++@col] = true
-          when @directions.LEFT  then @grid[@row][--@col] = true
-          when @directions.UP    then @grid[--@row][@col] = true
-          when @directions.DOWN  then @grid[++@row][@col] = true
-          when undefined         then @debug 'Nowhere to go', row: @row, col: @col
-
-        @update_steps direction
-
-        @farthest_right = @col if @col > @farthest_right
-
-        if @farthest_right < @board.cols
-          @path.push row: @row, col: @col
-
-          stats =
-            position:
-              row: @row
-              col: @col
-            steps: @steps
-            direction: direction
-            distance: ++@total_distance
-
-          @update stats
+        if neighbors.length == 0
+          @col = @farthest_right.col
+          @row = @farthest_right.row
 
           @carve_path()
         else
-          @done @path
+          direction = @director neighbors
+
+          switch @directions[direction]
+            when @directions.RIGHT then @grid[@row][++@col] = true
+            when @directions.LEFT  then @grid[@row][--@col] = true
+            when @directions.UP    then @grid[--@row][@col] = true
+            when @directions.DOWN  then @grid[++@row][@col] = true
+            when undefined         then return @carve_path()
+
+          @update_steps direction
+
+          if @col > @farthest_right.col
+            @farthest_right.col = @col
+            @farthest_right.row = @row
+
+          if @farthest_right.col < @board.cols
+            @path.push row: @row, col: @col
+
+            stats =
+              position:
+                row: @row
+                col: @col
+              steps: @steps
+              direction: direction
+              distance: ++@total_distance
+
+            @update stats
+
+            @carve_path()
+          else
+            @done @path
 
     module.exports = Carver
