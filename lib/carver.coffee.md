@@ -72,7 +72,7 @@
             @farthest_right.row = @row
 
           if @farthest_right.col < @board.cols
-            @path.push row: @row, col: @col
+            @path.push row: @row, col: @col, direction: direction
 
             stats =
               position:
