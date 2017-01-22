@@ -97,6 +97,9 @@
               return neighbor if option[neighbor] > chance
         .then (mod) ->
           mod.grid[mod.row][mod.col] = true
+          mod.path.push
+            row: mod.row
+            col: mod.col
 
           mod.carve_path()
         .then (steps) ->
