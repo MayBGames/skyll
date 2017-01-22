@@ -42,8 +42,8 @@
           ctx.fillStyle = @block_fill_color
           ctx.fill()
 
-          x = (@cell_width  * 0.5)  + (@cell_width  * step.col)
-          y = (@cell_height * 0.75) + (@cell_height * step.row)
+          x = (@cell_width  * 0.5) + (@cell_width  * step.col)
+          y = (@cell_height * 0.5) + (@cell_height * step.row)
 
           ctx.fillStyle = @block_border_color
           ctx.fillText i, x, y
