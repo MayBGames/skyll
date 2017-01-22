@@ -31,19 +31,28 @@
       persist: (name, path) =>
         ctx = @draw_to.getContext '2d'
 
-        for step in path
+        ctx.font      = "#{Math.floor @cell_height * 0.5}pt Arial"
+        ctx.textAlign = 'center'
+
+        for step, i in path
           ctx.beginPath()
           ctx.rect @cell_width * step.col, @cell_height * step.row, @cell_width, @cell_height
           ctx.fillStyle = @block_fill_color
           ctx.fill()
-          ctx.lineWidth   = @block_border_width
-          ctx.strokeStyle = @block_border_color
-          ctx.stroke()
 
-        @draw_to.createPNGStream().pipe @fs.createWriteStream name
+          x = (@cell_width  * 0.5)  + (@cell_width  * step.col)
+          y = (@cell_height * 0.75) + (@cell_height * step.row)
 
-        @debug 'Persisted', location: name, steps: path.length
+          ctx.fillStyle = 'black'
+          ctx.fillText i, x, y
+          # ctx.lineWidth   = @block_border_width
+          # ctx.strokeStyle = @block_border_color
+          # ctx.stroke()
 
-        @done()
+        stream = @fs.createWriteStream name
+
+        stream.on 'finish', => @done 'Persisted', location: name, steps: path.length
+
+        @draw_to.createPNGStream().pipe stream
 
     module.exports = PngPersister
