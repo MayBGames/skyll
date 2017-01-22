@@ -27,6 +27,8 @@
       .describe 'h', 'Height of a grid cell'
       .alias 'x', 'multiplier'
       .describe 'x', 'Increase cell size by x times'
+      .alias 'l', 'levels'
+      .describe 'l', 'Number of auto-named levels to create'
       .default
         verbosity:  3
         rows:       15
@@ -34,11 +36,18 @@
         width:      8
         height:     7
         multiplier: 2
+        levels:     1
       .help 'help'
       .epilogue '© Bryan Maynard 2016'
       .argv
 
-    levels = if argv._.length > 0 then argv._ else [ new Date().toString() ]
+    levels = [ ]
+
+    if argv._.length > 0
+      levels.concat argv._
+    else
+      for level in [0...argv.l]
+        levels.push new Date(Date.now() - (((argv.l - 1) - level) * 1000)).toString()
 
     process.env.CGAPI_LOG_LEVEL = argv.verbosity
 
@@ -51,14 +60,24 @@
     board      = cols: argv.c, rows: argv.r
     dimensions = width: cell.width * board.cols, height: cell.height * board.rows
 
-    render = (level, index) ->
+    next = 0
+
+    render = (level) ->
       grid = ((false for j in [0..board.cols]) for i in [0..board.rows])
 
       new Carver()
         .initialize
-          row:      Math.floor board.rows / 2
-          grid:     grid
-          board:    board
+          steps: 0
+          path:  [ ]
+          row:   Math.floor board.rows / 2
+          col:   0
+          grid:  grid
+          board: board
+          farthest_right:
+            row: 0
+            col: 0
+          total_distance:     0
+          previous_direction: undefined
           director: (neighbors) ->
             o = [ ]
 
@@ -77,7 +96,7 @@
 
               return neighbor if option[neighbor] > chance
         .then (mod) ->
-          grid[mod.row][mod.col] = true
+          mod.grid[mod.row][mod.col] = true
 
           mod.carve_path()
         .then (steps) ->
@@ -88,9 +107,8 @@
               cell_height: cell.height
             .then (png) ->
               name = path.join __dirname, '..', 'output', "#{level}.png"
-              next = index + 1
 
               png.persist name, steps
-        .then -> render levels[next], next if next < levels.length
+                .then -> process.nextTick -> render levels[next] if ++next < levels.length
 
-    render levels[0], 0
+    render levels[next]
