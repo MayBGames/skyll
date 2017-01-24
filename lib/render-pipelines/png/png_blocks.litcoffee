@@ -7,12 +7,16 @@
       block_border_color: 'black'
 
       do_render: (path) =>
-        @ctx.lineWidth = @block_border_width
-        @ctx.fillStyle = @block_fill_color
+        ctx    = PngRenderer.ctx
+        width  = PngRenderer.cell_width
+        height = PngRenderer.cell_height
 
         for step in path
-          @ctx.beginPath()
-          @ctx.rect @cell_width * step.col, @cell_height * step.row, @cell_width, @cell_height
-          @ctx.fill()
+          ctx.lineWidth = @block_border_width
+          ctx.fillStyle = @block_fill_color
+
+          ctx.beginPath()
+          ctx.rect width * step.col, height * step.row, width, height
+          ctx.fill()
 
     module.exports = PngBlocks
