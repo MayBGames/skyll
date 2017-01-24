@@ -49,7 +49,7 @@
             height: params.cell.height * params.grid.length
             cell:   params.cell
 
-          @deps.push p
+          @deps.push p unless @deps.includes p
 
         super().then =>
           for p in params.pipeline
