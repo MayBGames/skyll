@@ -53,8 +53,7 @@
 
         super().then =>
           for p in params.pipeline
-            render_pipeline.push @[p]
-
+            @render_pipeline.push @[p] unless @render_pipeline.includes @[p]
           deferred.resolve @
 
         deferred.promise
