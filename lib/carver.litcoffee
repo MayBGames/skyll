@@ -84,7 +84,7 @@
             @farthest_right.col = @col
             @farthest_right.row = @row
 
-          if @farthest_right.col < @gred[0].length
+          if @farthest_right.col < @grid[0].length - 1
             @path.push row: @row, col: @col, direction: direction
 
             stats =
