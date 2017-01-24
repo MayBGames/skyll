@@ -66,7 +66,7 @@
 
             if typeof mod == 'function'
               new mod()
-                .initialize()
+                .initialize @ctor_params?[name]
                 .then (mod) =>
                   available[name] = mod
                   cb()

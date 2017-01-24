@@ -4,7 +4,6 @@
       pub: [ 'carve_path' ]
 
       grid:  undefined
-      board: undefined
       row:   0
       col:   0
       steps: 0
@@ -23,10 +22,22 @@
         UP:    2
         DOWN:  3
 
-      initialize: (params) =>
-        @[key] = val for key, val of params
+      initialize: (grid, starting_row, director) =>
+        @grid  = grid
+        @path  = [ ]
+        @row   = starting_row
+        @col   = 0
 
-        @farthest_right.row = @row if @row?
+        @farthest_right     = row: @row, col: 0
+        @previous_direction = undefined
+
+        @steps          = 0
+        @total_distance = 0
+
+        @director = director
+
+        @grid[@row][@col] = true
+        @path.push row: @row, col: @col
 
         super()
 
@@ -44,11 +55,13 @@
 
       carve_path: =>
         neighbors = [ ]
+        width     = @grid[0].length
+        height    = @grid.length
 
-        neighbors.push 'UP'    if @row > 0               && @neighbor(-1,  0) == false
-        neighbors.push 'DOWN'  if @row < @board.rows - 2 && @neighbor( 1,  0) == false
-        neighbors.push 'LEFT'  if @col > 0               && @neighbor( 0, -1) == false
-        neighbors.push 'RIGHT' if @col < @board.cols     && @neighbor( 0,  1) == false
+        neighbors.push 'UP'    if @row > 0          && @neighbor(-1,  0) == false
+        neighbors.push 'DOWN'  if @row < height - 2 && @neighbor( 1,  0) == false
+        neighbors.push 'LEFT'  if @col > 0          && @neighbor( 0, -1) == false
+        neighbors.push 'RIGHT' if @col < width      && @neighbor( 0,  1) == false
 
         if neighbors.length == 0
           @col = @farthest_right.col
@@ -71,7 +84,7 @@
             @farthest_right.col = @col
             @farthest_right.row = @row
 
-          if @farthest_right.col < @board.cols
+          if @farthest_right.col < @gred[0].length
             @path.push row: @row, col: @col, direction: direction
 
             stats =
