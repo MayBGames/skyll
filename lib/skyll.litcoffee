@@ -39,6 +39,8 @@
         @grid = params.grid
         @cell = params.cell
 
+        @ctor_params = { }
+
         @starting_row = params.starting_row
 
         for p in params.pipeline
