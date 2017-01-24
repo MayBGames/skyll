@@ -3,7 +3,7 @@
 
     class PngRenderer extends Module
       deps: [ 'fs', 'canvas' ]
-      pub:  [ 'render' ]
+      pub:  [ 'render', 'flush', 'reset' ]
 
       @draw_to: undefined
       @ctx:     undefined
@@ -33,15 +33,20 @@
 
         deferred.promise
 
-      render: (level, path) =>
-        @ctx = @draw_to.getContext '2d'
-
+      render: (path) =>
         @do_render path
+        @done()
 
+      flush: (level) =>
         stream = @fs.createWriteStream level
 
-        stream.on 'finish', => @done 'Persisted', location: level, steps: path.length
+        stream.on 'finish', => @done 'Persisted', location: level
 
-        @draw_to.createPNGStream().pipe stream
+        PngRenderer.draw_to.createPNGStream().pipe stream
+
+      reset: =>
+        PngRenderer.draw_to = new @canvas PngRenderer.board_width, PngRenderer.board_height
+        PngRenderer.ctx     = PngRenderer.draw_to.getContext '2d'
+        @done()
 
     module.exports = PngRenderer
