@@ -2,7 +2,7 @@
     q      = require 'q'
 
     class PngRenderer extends Module
-      deps: [ 'fs', 'canvas' ]
+      deps: [ 'fs', 'canvas', 'path' ]
       pub:  [ 'render', 'flush', 'reset' ]
 
       @draw_to: undefined
@@ -38,7 +38,7 @@
         @done()
 
       flush: (level) =>
-        stream = @fs.createWriteStream level
+        stream = @fs.createWriteStream @path.join __dirname, '..', '..', '..', 'output', "#{level}.png"
 
         stream.on 'finish', => @done 'Persisted', location: level
 

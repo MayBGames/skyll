@@ -25,7 +25,7 @@
           grid:         grid
           cell:         width: argv.w * argv.x, height: argv.h * argv.x
           pipeline:     argv.pipeline.split ','
-        .then (mod) -> mod.craft path.join __dirname, '..', 'output', "#{level}.png"
+        .then (mod) -> mod.craft level
         .then -> process.nextTick -> render levels[next] if ++next < levels.length
 
     render levels[next]
