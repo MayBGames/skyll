@@ -24,10 +24,13 @@
       .describe 'h', 'Height of a grid cell'
       .alias 'x', 'multiplier'
       .describe 'x', 'Increase cell size by x times'
-      .alias 'l', 'levels'
+      .number 'l'
       .describe 'l', 'Number of auto-named levels to create'
+      .array 'levels'
+      .describe 'levels', 'Array of named levels to create'
       .alias 'p', 'pipeline'
       .describe 'p', 'The steps of the render pipleline'
+      .conflicts 'levels', 'l'
       .default
         verbosity:  3
         rows:       15
