@@ -1,31 +1,26 @@
     `#! /usr/bin/env node
     `
 
-    argv = require './arguments'
+    Config = require './config'
 
-    levels = [ ]
+    new Config()
+      .initialize cli: true
+      .then (config) ->
+        Skyll = require './skyll'
+        next  = 0
 
-    if argv._.length > 0
-      levels.concat argv._
-    else
-      for level in [0...argv.l]
-        levels.push new Date(Date.now() - (((argv.l - 1) - level) * 1000)).toString()
+        render = (level) ->
+          grid   = ((false for j in [0..config.columns]) for i in [0..config.rows])
+          width  = config.width  * config.multiplier
+          height = config.height * config.multiplier
 
-    process.env.CGAPI_LOG_LEVEL = argv.verbosity
+          new Skyll()
+            .initialize
+              starting_row: Math.floor grid.length / 2
+              grid:         grid
+              cell:         width: width, height: height
+              pipeline:     config.pipeline
+            .then (mod) -> mod.craft level
+            .then -> render config.levels[next] if ++next < config.levels.length
 
-    Skyll = require './skyll'
-    next  = 0
-
-    render = (level) ->
-      grid = ((false for j in [0..argv.columns]) for i in [0..argv.rows])
-
-      new Skyll()
-        .initialize
-          starting_row: Math.floor grid.length / 2
-          grid:         grid
-          cell:         width: argv.w * argv.x, height: argv.h * argv.x
-          pipeline:     argv.pipeline.split ','
-        .then (mod) -> mod.craft level
-        .then -> process.nextTick -> render levels[next] if ++next < levels.length
-
-    render levels[next]
+        render config.levels[next]
