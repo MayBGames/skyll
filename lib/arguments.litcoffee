@@ -1,16 +1,41 @@
     module.exports = require 'yargs'
-      .usage 'Usage: $0 [options] name1 name2 ...'
+      .usage 'Usage: $0 [options] levelname anotherlevelname yetanotherlevelname ...'
       .example '$0',
-        'Creates a 50 x 15 level with 16 x 14 cells and an auto-generated name'
+        "Creates a level with default row and column counts,
+         the default size and multiplier for each cell,
+         an auto-generated name,
+         and logging set to default verbosity\n"
       .example '$0 -vvvvvvvv',
-        "Create a 50 x 15 level with 16 x 14 cells, an auto-generated name, and
-        logging set to verbosity level 8 (max)"
+        "Creates a level with default row and column counts,
+         the default size and multiplier for each cell,
+         an auto-generated name,
+         and logging set to verbosity level 8 (max)\n"
       .example '$0 -w 20 -h 20',
-        'Creates a 50 x 15 level with 40 X 40 cells & an auto-generated name'
+        "Creates a level with default row and column counts,
+         the cells 20 units wide, 20 units high,
+         expanded by the default multiplier,
+         an auto-generated name,
+         and logging set to default verbosity\n"
       .example '$0 -w 10 -h 10 -x 4',
-        'Creates a 50 x 15 level with 40 x 40 cells and an auto-generated name'
+        "Creates a level with default row and column counts,
+         40 x 40 unit cells,
+         an auto-generated name,
+         and logging set to default verbosity\n"
       .example '$0 lvl1 lvl2',
-        'Creates two levels, lvl1 & lvl2, each 50 X 15 with 16 x 14 cells'
+        "Creates two levels; named lvl1 and lvl2 -
+         each with default row and column counts,
+         the default size and multiplier for each cell,
+         and logging set to default verbosity\n"
+      .example '$0 --levels one two three',
+        "Creates three levels; named one, two, and three -
+         each with default row and column counts,
+         the default size and multiplier for each cell,
+         and logging set to default verbosity\n"
+      .example '$0 -l10',
+        "Creates ten auto-named levels -
+         each with default row and column counts,
+         the default size and multiplier for each cell,
+         and logging set to default verbosity\n"
       .count 'verbosity'
       .alias 'v', 'verbosity'
       .describe 'v', 'Level of logging verbosity: 1 - 8'
