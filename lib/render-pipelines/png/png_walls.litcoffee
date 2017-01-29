@@ -2,17 +2,14 @@
 
     class PngWalls extends PngRenderer
 
-      wall_width: 1
-      wall_color: 'red'
-
       do_render: (path) =>
         ctx    = PngRenderer.ctx
         width  = @config.width
         height = @config.height
 
         for step, i in path
-          ctx.lineWidth   = @wall_width
-          ctx.strokeStyle = @wall_color
+          ctx.lineWidth   = @config.wall.width
+          ctx.strokeStyle = @config.wall.color
 
           if i > 0
             previous = path[i - 1]
