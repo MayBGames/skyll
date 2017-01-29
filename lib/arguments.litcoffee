@@ -42,4 +42,5 @@
         multiplier: 4
         pipeline:   [ 'png_blocks', 'png_walls', 'png_step_count' ]
       .epilogue '© Bryan Maynard 2016'
+      .wrap 120
       .argv
