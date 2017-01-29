@@ -8,6 +8,24 @@
 
     class Config extends Module
 
+      pathfinder: (neighbors) ->
+        o = [ ]
+
+        for n in [1..(neighbors.length / 1)]
+          c = 1 / neighbors.length
+
+          if neighbors[n - 1] == 'RIGHT'
+            o.push "#{neighbors[n - 1]}": ((c * n) * ((2 / c) * 0.5)) * c
+          else
+            o.push "#{neighbors[n - 1]}": ((c * n) * (0.5 / c)) * c
+
+        chance = Math.random()
+
+        for option in o
+          neighbor = Object.keys(option)[0]
+
+          return neighbor if option[neighbor] > chance
+
       initialize: (params) =>
         deferred = q.defer()
         levels   = [ ]
@@ -40,6 +58,9 @@
           levels.push new Date().toString() if levels.length == 0
 
           @levels = levels
+          @grid   = ((false for j in [0..@columns]) for i in [0..@rows])
+          @width  = @width  * @multiplier
+          @height = @height * @multiplier
 
           super().then => deferred.resolve @
 

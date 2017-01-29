@@ -1,9 +1,10 @@
     Module = require './module'
+    q      = require 'q'
 
     class Carver extends Module
+      deps: [ 'config' ]
       pub: [ 'carve_path' ]
 
-      grid:  undefined
       row:   0
       col:   0
       steps: 0
@@ -11,7 +12,6 @@
 
       previous_direction: undefined
       total_distance:     0
-      director:           undefined
       farthest_right:
         row: 0
         col: 0
@@ -22,11 +22,12 @@
         UP:    2
         DOWN:  3
 
-      initialize: (grid, starting_row, director) =>
-        @grid  = grid
-        @path  = [ ]
-        @row   = starting_row
-        @col   = 0
+      initialize: (starting_row) =>
+        deferred = q.defer()
+
+        @path = [ ]
+        @row  = starting_row
+        @col  = 0
 
         @farthest_right     = row: @row, col: 0
         @previous_direction = undefined
@@ -34,12 +35,13 @@
         @steps          = 0
         @total_distance = 0
 
-        @director = director
+        super().then =>
+          @config.grid[@row][@col] = true
+          @path.push row: @row, col: @col
 
-        @grid[@row][@col] = true
-        @path.push row: @row, col: @col
+          deferred.resolve @
 
-        super()
+        deferred.promise
 
       update_steps: (dir) =>
         if @previous_direction?
@@ -51,12 +53,12 @@
           @previous_direction = @directions[dir]
           @steps = 0
 
-      neighbor: (x = 0, y = 0) => @grid[@row + x][@col + y]
+      neighbor: (x = 0, y = 0) => @config.grid[@row + x][@col + y]
 
       carve_path: =>
         neighbors = [ ]
-        width     = @grid[0].length
-        height    = @grid.length
+        width     = @config.grid[0].length
+        height    = @config.grid.length
 
         neighbors.push 'UP'    if @row > 0          && @neighbor(-1,  0) == false
         neighbors.push 'DOWN'  if @row < height - 2 && @neighbor( 1,  0) == false
@@ -69,13 +71,13 @@
 
           @carve_path()
         else
-          direction = @director neighbors
+          direction = @config.pathfinder neighbors
 
           switch @directions[direction]
-            when @directions.RIGHT then @grid[@row][++@col] = true
-            when @directions.LEFT  then @grid[@row][--@col] = true
-            when @directions.UP    then @grid[--@row][@col] = true
-            when @directions.DOWN  then @grid[++@row][@col] = true
+            when @directions.RIGHT then @config.grid[@row][++@col] = true
+            when @directions.LEFT  then @config.grid[@row][--@col] = true
+            when @directions.UP    then @config.grid[--@row][@col] = true
+            when @directions.DOWN  then @config.grid[++@row][@col] = true
             when undefined         then return @carve_path()
 
           @update_steps direction
@@ -84,7 +86,7 @@
             @farthest_right.col = @col
             @farthest_right.row = @row
 
-          if @farthest_right.col < @grid[0].length - 1
+          if @farthest_right.col < @config.grid[0].length - 1
             @path.push row: @row, col: @col, direction: direction
 
             stats =

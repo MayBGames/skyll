@@ -2,51 +2,43 @@
     q      = require 'q'
 
     class PngRenderer extends Module
-      deps: [ 'fs', 'canvas', 'path' ]
+      deps: [ 'fs', 'canvas', 'path', 'config' ]
       pub:  [ 'render', 'flush', 'reset' ]
 
       @draw_to: undefined
       @ctx:     undefined
-
-      @board_width:  undefined
-      @board_height: undefined
-
-      @cell_width:  undefined
-      @cell_height: undefined
 
       initialize: (params) =>
         deferred = q.defer()
 
         super()
           .then =>
-            unless PngRenderer.draw_to?
-              PngRenderer.cell_width  = params.cell.width
-              PngRenderer.cell_height = params.cell.height
-
-              PngRenderer.board_width  = params.width
-              PngRenderer.board_height = params.height
-
-              PngRenderer.draw_to = new @canvas params.width, params.height
-              PngRenderer.ctx     = PngRenderer.draw_to.getContext '2d'
+            @initialize_drawing_context() unless PngRenderer.draw_to?
 
             deferred.resolve @
 
         deferred.promise
 
-      render: (path) =>
-        @do_render path
-        @done()
+      initialize_drawing_context: =>
+        width  = @config.width  * @config.grid[0].length
+        height = @config.height * @config.grid.length
+
+        PngRenderer.draw_to = new @canvas width, height
+        PngRenderer.ctx     = PngRenderer.draw_to.getContext '2d'
+
+      render: (path) => @done @do_render path
 
       flush: (level) =>
         stream = @fs.createWriteStream @path.join __dirname, '..', '..', '..', 'output', "#{level}.png"
+
+        for row, r in @config.grid
+          for cell, c in @config.grid[r]
+            @config.grid[r][c] = false
 
         stream.on 'finish', => @done 'Persisted', location: level
 
         PngRenderer.draw_to.createPNGStream().pipe stream
 
-      reset: =>
-        PngRenderer.draw_to = new @canvas PngRenderer.board_width, PngRenderer.board_height
-        PngRenderer.ctx     = PngRenderer.draw_to.getContext '2d'
-        @done()
+      reset: => @done @initialize_drawing_context()
 
     module.exports = PngRenderer

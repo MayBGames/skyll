@@ -8,8 +8,8 @@
 
       do_render: (path) =>
         ctx    = PngRenderer.ctx
-        width  = PngRenderer.cell_width
-        height = PngRenderer.cell_height
+        width  = @config.width
+        height = @config.height
 
         for step in path
           ctx.lineWidth = @block_border_width
