@@ -28,9 +28,11 @@
       .describe 'l', 'Number of auto-named levels to create'
       .array 'levels'
       .describe 'levels', 'Array of named levels to create'
+      .array 'pipeline'
       .alias 'p', 'pipeline'
       .describe 'p', 'The steps of the render pipleline'
       .conflicts 'levels', 'l'
+      .help 'help'
       .default
         verbosity:  3
         rows:       15
@@ -38,8 +40,6 @@
         width:      8
         height:     7
         multiplier: 4
-        levels:     1
-        pipeline:   'png_blocks,png_walls,png_step_count'
-      .help 'help'
+        pipeline:   [ 'png_blocks', 'png_walls', 'png_step_count' ]
       .epilogue '© Bryan Maynard 2016'
       .argv
