@@ -49,11 +49,12 @@
                   @[key] = val
           else
             for key, val of require config
-              if key == 'levels'
-                for level in [0...val]
-                  levels.push new Date(Date.now() - (((val - 1) - level) * 1000)).toString()
-              else
-                @[key] = val
+              unless @[key]?
+                if key == 'levels'
+                  for level in [0...val]
+                    levels.push new Date(Date.now() - (((val - 1) - level) * 1000)).toString()
+                else
+                  @[key] = val
 
           levels.push new Date().toString() if levels.length == 0
 
