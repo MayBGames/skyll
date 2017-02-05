@@ -4,7 +4,7 @@
     Config = require './config'
 
     new Config()
-      .initialize cli: true
+      .initialize()
       .then (config) ->
         Skyll = require './skyll'
         next  = 0
