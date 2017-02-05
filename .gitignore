@@ -4,4 +4,4 @@ dist
 .tmp
 output/*.png
 docs/_site
-.skyll.conf.js
+.*.conf.js
