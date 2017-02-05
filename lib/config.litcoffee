@@ -8,53 +8,49 @@
 
     class Config extends Module
 
-      pathfinder: (neighbors) ->
-        o = [ ]
-
-        for n in [1..(neighbors.length / 1)]
-          c = 1 / neighbors.length
-
-          if neighbors[n - 1] == 'RIGHT'
-            o.push "#{neighbors[n - 1]}": ((c * n) * ((2 / c) * 0.5)) * c
-          else
-            o.push "#{neighbors[n - 1]}": ((c * n) * (0.5 / c)) * c
-
-        chance = Math.random()
-
-        for option in o
-          neighbor = Object.keys(option)[0]
-
-          return neighbor if option[neighbor] > chance
-
       initialize: (params) =>
         deferred = q.defer()
         levels   = [ ]
-        base     = if params?.location? then params.location else path.join __dirname, '..'
-        config   = path.join base, '.skyll.conf.js'
+
+        if params?.location?
+          config = params.location
+        else if argv.conf?
+          config = argv.conf
+        else
+          config = path.join __dirname, '..', '.skyll.conf.js'
+
+
+        if argv?._?.length > 0
+          levels = levels.concat argv._
+        else if argv?.l?
+          for level in [0...argv.l]
+            levels.push new Date(Date.now() - (((argv.l - 1) - level) * 1000)).toString()
+        else if argv?.levels? == false
+          levels.push new Date().toString()
+
+        for key, val of argv
+          if key.length > 2 && typeof val != 'undefined'
+            if key == 'levels'
+              levels = levels.concat val
+            else
+              @[key] = val
 
         fs.stat config, (err) =>
-          if err? || params?.cli?
-            if argv?._?.length > 0
-              levels = levels.concat argv._
-            else if argv?.l?
-              for level in [0...argv.l]
-                levels.push new Date(Date.now() - (((argv.l - 1) - level) * 1000)).toString()
-            else if argv?.levels? == false
-              levels.push new Date().toString()
-            for key, val of argv
-              if key.length > 2 && typeof val != 'undefined'
-                if key == 'levels'
-                  levels = levels.concat val
-                else
-                  @[key] = val
+          if err?
+            return deferred.reject @error 'DOES NOT EXIST', file: config
           else
             for key, val of require config
-              unless @[key]?
-                if key == 'levels'
-                  for level in [0...val]
-                    levels.push new Date(Date.now() - (((val - 1) - level) * 1000)).toString()
-                else
-                  @[key] = val
+              if typeof val == 'object' && val != null && val.length? == false
+                @[key] = { } unless @[key]?
+
+                @[key][k] = v for k, v of val
+              else
+                unless @[key]?
+                  if key == 'levels'
+                    for level in [0...val]
+                      levels.push new Date(Date.now() - (((val - 1) - level) * 1000)).toString()
+                  else
+                    @[key] = val
 
           levels.push new Date().toString() if levels.length == 0
 
