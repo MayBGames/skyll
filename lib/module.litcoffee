@@ -12,6 +12,11 @@
     class Module
 
       constructor: ->
+        @debug = (msg, data) -> logger.debug msg, data
+        @info  = (msg, data) -> logger.info  msg, data
+        @warn  = (msg, data) -> logger.warn  msg, data
+        @error = (msg, data) -> logger.error msg, data
+
         if arguments.length == 0 || arguments[0] == ''
           @clazz = arguments.callee.caller.name
         else
@@ -165,11 +170,6 @@
           process.nextTick =>
             @wrap_methods() if wrap
             deferred.resolve @
-
-        @debug = (msg, data) -> logger.debug msg, data
-        @info  = (msg, data) -> logger.info  msg, data
-        @warn  = (msg, data) -> logger.warn  msg, data
-        @error = (msg, data) -> logger.error msg, data
 
         deferred.promise
 
