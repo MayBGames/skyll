@@ -8,7 +8,6 @@
         height = @config.height
 
         for step in path
-          ctx.lineWidth = @config.block.border_width
           ctx.fillStyle = @config.block.fill_color
 
           ctx.beginPath()
