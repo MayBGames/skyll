@@ -56,6 +56,17 @@
       .array 'pipeline'
       .alias 'p', 'pipeline'
       .describe 'p', 'The steps of the render pipleline'
+      .string 'conf'
+      .describe 'conf', 'Absolute path to config file'
+      .string 'block.fill_color'
+      .describe 'block.fill_color', 'The color path blocks should be'
+      .string 'step_count.text_align'
+      .choices 'step_count.text_align', [ 'left', 'center', 'right' ]
+      .string 'step_count.text_color'
+      .describe 'step_count.text_color', 'Can be either html color names or hex values'
+      .number 'wall.width'
+      .string 'wall.color'
+      .describe 'wall.color', 'Can be either html color names or hex values'
       .conflicts 'levels', 'l'
       .help 'help'
       .default
@@ -66,6 +77,14 @@
         height:     7
         multiplier: 4
         pipeline:   [ 'png_blocks', 'png_walls', 'png_step_count' ]
+        block:
+          fill_color: 'white'
+        step_count:
+          text_align: 'center'
+          text_color: 'black'
+        wall:
+          width: 1
+          color: '#666'
       .epilogue '© Bryan Maynard 2016'
       .wrap 120
       .argv
