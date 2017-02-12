@@ -59,11 +59,15 @@
       .string 'conf'
       .describe 'conf', 'Absolute path to config file'
       .string 'block.fill_color'
-      .describe 'block.fill_color', 'The color path blocks should be'
-      .string 'step_count.text_align'
-      .choices 'step_count.text_align', [ 'left', 'center', 'right' ]
-      .string 'step_count.text_color'
-      .describe 'step_count.text_color', 'Can be either html color names or hex values'
+      .describe 'block.fill_color', 'Path block color. Can be an html color name or hex value'
+      .string 'ground.fill_color'
+      .describe 'ground.fill_color', 'Ground block color. Can be an html color name or hex value'
+      .string 'step_count.text.align'
+      .choices 'step_count.text.align', [ 'left', 'center', 'right' ]
+      .string 'step_count.text.color'
+      .describe 'step_count.text.color', 'Can be either html color names or hex values'
+      .number 'ground.segments'
+      .number 'ground.max_height_diff'
       .number 'wall.width'
       .string 'wall.color'
       .describe 'wall.color', 'Can be either html color names or hex values'
@@ -76,12 +80,17 @@
         width:      8
         height:     7
         multiplier: 4
-        pipeline:   [ 'png_blocks', 'png_walls', 'png_step_count' ]
+        pipeline:   [ 'png_blocks', 'png_walls', 'png_grounder', 'png_step_count' ]
         block:
           fill_color: 'white'
+        ground:
+          fill_color:     '#888'
+          segments:        8
+          max_height_diff: 4
         step_count:
-          text_align: 'center'
-          text_color: 'black'
+          text:
+            align: 'center'
+            color: 'black'
         wall:
           width: 1
           color: '#666'

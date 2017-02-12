@@ -40,17 +40,14 @@
             return deferred.reject @error 'DOES NOT EXIST', file: config
           else
             for key, val of require config
-              if typeof val == 'object' && val != null && val.length? == false
-                @[key] = { } unless @[key]?
-
-                @[key][k] = v for k, v of val
+              if key == 'levels'
+                for level in [0...val]
+                  levels.push new Date(Date.now() - (((val - 1) - level) * 1000)).toString()
               else
-                unless @[key]?
-                  if key == 'levels'
-                    for level in [0...val]
-                      levels.push new Date(Date.now() - (((val - 1) - level) * 1000)).toString()
-                  else
-                    @[key] = val
+                if typeof val == 'object' && val != null && val.length? == false
+                  @dive_deeper val, @
+                else
+                  @[key] = val
 
           levels.push new Date().toString() if levels.length == 0
 
@@ -62,5 +59,14 @@
           super().then => deferred.resolve @
 
         deferred.promise
+
+      dive_deeper: (obj, context) =>
+        for key, val of obj
+          context[key] = { } unless context[key]?
+
+          if typeof val == 'object' && val != null && val.length? == false
+            @dive_deeper val, context[key]
+          else
+            context[key] = val
 
     module.exports = Config
