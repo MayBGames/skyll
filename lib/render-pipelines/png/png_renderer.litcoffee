@@ -13,7 +13,7 @@
 
         super()
           .then =>
-            @initialize_drawing_context() unless PngRenderer.draw_to?
+            @initialize_drawing_context()
 
             deferred.resolve @
 
