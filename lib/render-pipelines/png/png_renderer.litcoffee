@@ -26,7 +26,10 @@
         PngRenderer.draw_to = new @canvas width, height
         PngRenderer.ctx     = PngRenderer.draw_to.getContext '2d'
 
-      render: (path) => @done @do_render path
+      render: (path, level_name) =>
+        location = @path.join __dirname, '..', '..', '..', 'output', "#{level_name}.json"
+        @fs.readFile location, 'utf8', (err, data) =>
+          @done @do_render PngRenderer.ctx, JSON.parse data
 
       flush: (level) =>
         stream = @fs.createWriteStream @path.join __dirname, '..', '..', '..', 'output', "#{level}.png"
