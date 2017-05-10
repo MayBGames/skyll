@@ -9,8 +9,7 @@
       renderers:       [ ]
 
       initialize: (params) =>
-        deferred      = q.defer()
-        @starting_row = params.starting_row
+        deferred = q.defer()
 
         super().then =>
           for p in @config.pipeline
