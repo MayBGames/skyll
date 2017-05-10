@@ -10,7 +10,7 @@
           ctx.fillStyle = @config.block.fill_color
 
           ctx.beginPath()
-          ctx.rect width * step.col, height * step.row, width, height
+          ctx.rect width * step.x, height * step.y, width, height
           ctx.fill()
 
     module.exports = PngBlocks
