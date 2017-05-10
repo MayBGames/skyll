@@ -2,8 +2,7 @@
 
     class PngBlocks extends PngRenderer
 
-      do_render: (path) =>
-        ctx    = PngRenderer.ctx
+      do_render: (ctx, path) =>
         width  = @config.width
         height = @config.height
 
