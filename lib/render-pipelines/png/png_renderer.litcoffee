@@ -3,7 +3,7 @@
 
     class PngRenderer extends Module
       deps: [ 'fs', 'canvas', 'path', 'config' ]
-      pub:  [ 'render', 'flush', 'reset' ]
+      pub:  [ 'render', 'flush' ]
 
       @draw_to: undefined
       @ctx:     undefined
@@ -38,7 +38,5 @@
         stream.on 'finish', => @done 'Persisted', location: level
 
         PngRenderer.draw_to.createPNGStream().pipe stream
-
-      reset: => @done @initialize_drawing_context()
 
     module.exports = PngRenderer
