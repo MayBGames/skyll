@@ -27,11 +27,11 @@
       wrap_methods: =>
         @pub?.forEach (method) =>
           callMe   = @[method]
-          deferred = q.defer()
 
           @["_#{method}"] = @[method]
 
           @[method] = =>
+            deferred = q.defer()
             start    = microtime.now()
             update   = start
 
