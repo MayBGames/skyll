@@ -50,6 +50,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "async": "^2.4.0",
     "canvas": "^1.6.2",
     "microtime": "^2.1.2",
     "node-uuid": "^1.4.8",
