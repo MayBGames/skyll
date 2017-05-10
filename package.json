@@ -29,7 +29,7 @@
     "gulp-coveralls": "^0.1.0",
     "gulp-eslint": "^3.0.1",
     "gulp-exclude-gitignore": "^1.0.0",
-    "gulp-hub": "frankwallis/gulp-hub#d461b9c700df9010d0a8694e4af1fb96d9f38bf4",
+    "gulp-hub": "frankwallis/gulp-hub#4.1.0",
     "gulp-istanbul": "^1.0.0",
     "gulp-line-ending-corrector": "^1.0.1",
     "gulp-mocha": "^3.0.1",
