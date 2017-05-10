@@ -77,15 +77,15 @@
         verbosity:  3
         rows:       15
         columns:    50
-        width:      8
-        height:     7
+        width:      24
+        height:     24
         multiplier: 4
         pipeline:   [ 'png_blocks', 'png_walls', 'png_grounder', 'png_step_count' ]
         block:
           fill_color: 'white'
         ground:
           fill_color:     '#888'
-          segments:        8
+          segments:        24
           max_height_diff: 4
         step_count:
           text:
@@ -94,6 +94,7 @@
         wall:
           width: 1
           color: '#666'
+          segments: 24
       .epilogue '© Bryan Maynard 2016'
       .wrap 120
       .argv
