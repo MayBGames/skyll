@@ -80,7 +80,12 @@
         width:      24
         height:     24
         multiplier: 4
-        pipeline:   [ 'png_blocks', 'png_walls', 'png_grounder', 'png_step_count' ]
+        # pipeline:   [ 'json_blocks', 'json_ground', 'json_walls' ]
+        # pipeline:   [ 'png_blocks', 'png_walls', 'png_ground', 'png_step_count' ]
+        pipeline: [
+          [ 'json_blocks', 'json_ground', 'json_walls' ]
+          [ 'png_blocks',  'png_ground',  'png_walls', 'png_roof', 'png_step_count' ]
+        ]
         block:
           fill_color: 'white'
         ground:
