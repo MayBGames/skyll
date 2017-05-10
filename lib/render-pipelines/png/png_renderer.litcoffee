@@ -31,14 +31,12 @@
         @fs.readFile location, 'utf8', (err, data) =>
           @done @do_render PngRenderer.ctx, JSON.parse data
 
-      flush: (level) =>
-        stream = @fs.createWriteStream @path.join __dirname, '..', '..', '..', 'output', "#{level}.png"
+      flush: (level_name) =>
+        stream = @fs.createWriteStream @path.join __dirname, '..', '..', '..', 'output', "#{level_name}.png"
 
-        for row, r in @config.grid
-          for cell, c in @config.grid[r]
-            @config.grid[r][c] = false
-
-        stream.on 'finish', => @done 'Persisted', location: level
+        stream.on 'finish', =>
+          @initialize_drawing_context()
+          @done 'Persisted', location: level_name
 
         PngRenderer.draw_to.createPNGStream().pipe stream
 
