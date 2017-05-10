@@ -9,10 +9,13 @@
         Skyll = require './skyll'
         next  = 0
 
-        render = (level) ->
-          new Skyll()
-            .initialize starting_row: Math.floor config.grid.length / 2
-            .then (mod) -> mod.craft level
-            .then -> render config.levels[next] if ++next < config.levels.length
+        new Skyll()
+          .initialize starting_row: Math.floor config.grid.length / 2
+          .then (mod) ->
+            render = (level) ->
+              mod.craft level
+                .then ->
+                  console.log 'finished rendering level', next
+                  render config.levels[next] if ++next < config.levels.length
 
-        render config.levels[next]
+            render config.levels[next]
