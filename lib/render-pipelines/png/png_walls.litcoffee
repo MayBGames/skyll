@@ -2,165 +2,30 @@
 
     class PngWalls extends PngRenderer
 
-      do_render: (path) =>
-        ctx    = PngRenderer.ctx
-        width  = @config.width
-        height = @config.height
+      do_render: (ctx, path) =>
+        cell_width  = @config.width
+        cell_height = @config.height
 
-        for step, i in path
-          ctx.lineWidth   = @config.wall.width
-          ctx.strokeStyle = @config.wall.color
+        wall_segments  = @config.wall.segments
+        segment_height = 1 / wall_segments
+        wall_height    = cell_height * segment_height
 
-          if i > 0
-            previous = path[i - 1]
-            top      =  height * previous.row  + 1
-            bottom   = (height * previous.row) + (height - 1)
-            left     = (width  * previous.col) + 1
-            right    = (width  * previous.col) + (width - 1)
+        fill_segment = (side, block, segment, width, color) =>
+          top  = (cell_height * block.y) + (segment * (cell_height * segment_height))
+          left = cell_width * block.x
 
-            switch step.direction
-              when 'RIGHT', 'LEFT'
-                if previous.direction != 'DOWN'
-                  ctx.beginPath()
-                  ctx.moveTo left,  top
-                  ctx.lineTo right, top
-                  ctx.stroke()
-                else if step.direction == 'RIGHT'
-                  ctx.beginPath()
-                  ctx.moveTo left, top
-                  ctx.lineTo left, bottom
-                  ctx.stroke()
-                else if step.direction == 'LEFT'
-                  ctx.beginPath()
-                  ctx.moveTo right, top
-                  ctx.lineTo right, bottom
-                  ctx.stroke()
+          left += cell_width - width if side == 'RIGHT'
 
-                if previous.direction != 'UP'
-                  ctx.beginPath()
-                  ctx.moveTo left,  bottom
-                  ctx.lineTo right, bottom
-                  ctx.stroke()
-                else if step.direction == 'RIGHT'
-                  ctx.beginPath()
-                  ctx.moveTo left, top
-                  ctx.lineTo left, bottom
-                  ctx.stroke()
-                else if step.direction == 'LEFT'
-                  ctx.beginPath()
-                  ctx.moveTo right, top
-                  ctx.lineTo right, bottom
-                  ctx.stroke()
+          ctx.fillStyle = color
 
-                if previous.direction == undefined
-                  if step.direction == 'RIGHT'
-                    ctx.beginPath()
-                    ctx.moveTo left, top
-                    ctx.lineTo left, bottom
-                    ctx.stroke()
-                  else if step.direction == 'LEFT'
-                    ctx.beginPath()
-                    ctx.moveTo right, top
-                    ctx.lineTo right, bottom
-                    ctx.stroke()
+          ctx.beginPath()
+          ctx.rect left, top, width, @config.multiplier
+          ctx.fill()
 
-              when 'UP', 'DOWN'
-                if previous.direction != 'LEFT'
-                  ctx.beginPath()
-                  ctx.moveTo right, top
-                  ctx.lineTo right, bottom
-                  ctx.stroke()
-                else if step.direction == 'DOWN'
-                  ctx.beginPath()
-                  ctx.moveTo left,  top
-                  ctx.lineTo right, top
-                  ctx.stroke()
-                else if step.direction == 'UP'
-                  ctx.beginPath()
-                  ctx.moveTo left,  bottom
-                  ctx.lineTo right, bottom
-                  ctx.stroke()
-
-                if previous.direction != 'RIGHT'
-                  ctx.beginPath()
-                  ctx.moveTo left, top
-                  ctx.lineTo left, bottom
-                  ctx.stroke()
-                else if step.direction == 'DOWN'
-                  ctx.beginPath()
-                  ctx.moveTo left,  top
-                  ctx.lineTo right, top
-                  ctx.stroke()
-                else if step.direction == 'UP'
-                  ctx.beginPath()
-                  ctx.moveTo left,  bottom
-                  ctx.lineTo right, bottom
-                  ctx.stroke()
-
-                if previous.direction == undefined
-                  if step.direction == 'DOWN'
-                    ctx.beginPath()
-                    ctx.moveTo left,  top
-                    ctx.lineTo right, top
-                    ctx.stroke()
-                  else if step.direction == 'UP'
-                    ctx.beginPath()
-                    ctx.moveTo left,  bottom
-                    ctx.lineTo right, bottom
-                    ctx.stroke()
-
-          if i == path.length - 1
-            previous = path[i - 1]
-            top      =  height * step.row  + 1
-            bottom   = (height * step.row) + (height - 1)
-            left     = (width  * step.col) + 1
-            right    = (width  * step.col) + (width - 1)
-
-            switch step.direction
-              when 'RIGHT', 'LEFT'
-                ctx.beginPath()
-                ctx.moveTo left,  top
-                ctx.lineTo right, top
-                ctx.stroke()
-
-                ctx.beginPath()
-                ctx.moveTo left,  bottom
-                ctx.lineTo right, bottom
-                ctx.stroke()
-
-                if step.direction == 'RIGHT'
-                  ctx.beginPath()
-                  ctx.moveTo right, top
-                  ctx.lineTo right, bottom
-                  ctx.stroke()
-
-                if step.direction == 'LEFT'
-                  ctx.beginPath()
-                  ctx.moveTo left, top
-                  ctx.lineTo left, bottom
-                  ctx.stroke()
-
-              when 'UP', 'DOWN'
-                ctx.beginPath()
-                ctx.moveTo right, top
-                ctx.lineTo right, bottom
-                ctx.stroke()
-
-                ctx.beginPath()
-                ctx.moveTo left, top
-                ctx.lineTo left, bottom
-                ctx.stroke()
-
-                if step.direction == 'UP'
-                  ctx.beginPath()
-                  ctx.moveTo left,  top
-                  ctx.lineTo right, top
-                  ctx.stroke()
-
-                if step.direction == 'DOWN'
-                  ctx.beginPath()
-                  ctx.moveTo left,  bottom
-                  ctx.lineTo right, bottom
-                  ctx.stroke()
+        for block in path
+          for side in [ 'left', 'right' ]
+            if block["#{side}_wall"]?
+              for seg, i in block["#{side}_wall"]
+                fill_segment side.toUpperCase(), block, i, seg.thickness, @config.wall.color
 
     module.exports = PngWalls
