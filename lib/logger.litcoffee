@@ -8,7 +8,7 @@
       defaultIndentation: 2
 
     clone_depth = 0
-    clone_limit = process.env.CGAPI_LOG_LEVEL - 4
+    clone_limit = process.env.MADUL_LOG_LEVEL - 4
 
     commaize = (x) -> x.toString().replace /\B(?=(\d{3})+(?!\d))/g, ','
 
@@ -99,23 +99,23 @@
       error "#{clazz}.#{method}(#{stats})", data
 
     trace = (msg, meta) ->
-      if process.env.CGAPI_LOG_LEVEL > 4
+      if process.env.MADUL_LOG_LEVEL > 4
         winston.loggers.get('trace').silly msg, clone meta
 
     debug = (msg, meta) ->
-      if process.env.CGAPI_LOG_LEVEL > 3
+      if process.env.MADUL_LOG_LEVEL > 3
         winston.loggers.get('debug').debug msg, clone meta
 
     info = (msg, meta) ->
-      if process.env.CGAPI_LOG_LEVEL > 2
+      if process.env.MADUL_LOG_LEVEL > 2
         winston.loggers.get('info').info msg, clone meta
 
     warn = (msg, meta) ->
-      if process.env.CGAPI_LOG_LEVEL > 1
+      if process.env.MADUL_LOG_LEVEL > 1
         winston.loggers.get('warn').warn msg, clone meta
 
     error = (msg, meta) ->
-      if process.env.CGAPI_LOG_LEVEL > 0
+      if process.env.MADUL_LOG_LEVEL > 0
         winston.loggers.get('error').error msg, clone meta
 
     module.exports =

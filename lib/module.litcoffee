@@ -42,7 +42,7 @@
                 if state == 'reject'
                   logger.rejected @clazz, method, microtime.now() - start, data
 
-                if process.env.CGAPI_LOG_LEVEL > 4
+                if process.env.MADUL_LOG_LEVEL > 4
                   if state == 'resolve'
                     logger.resolved @clazz, method, microtime.now() - start, data
                   else if state == 'notify'

@@ -3,8 +3,9 @@
     argv   = require './arguments'
     path   = require 'path'
     fs     = require 'fs'
+    uuid   = require 'node-uuid'
 
-    process.env.CGAPI_LOG_LEVEL = if argv?.verbosity? then argv.verbosity else 3
+    process.env.MADUL_LOG_LEVEL = if argv?.verbosity? then argv.verbosity else 3
 
     class Config extends Module
 
