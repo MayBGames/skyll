@@ -25,7 +25,7 @@
           levels = levels.concat argv._
         else if argv?.l?
           for level in [0...argv.l]
-            levels.push new Date(Date.now() - (((argv.l - 1) - level) * 1000)).toString()
+            levels.push uuid.v4()
         else if argv?.levels? == false
           levels.push new Date().toString()
 
