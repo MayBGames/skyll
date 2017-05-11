@@ -67,10 +67,16 @@
       .string 'step_count.text.color'
       .describe 'step_count.text.color', 'Can be either html color names or hex values'
       .number 'ground.segments'
+      .describe 'ground.segments', 'The number of horizontal pieces of ground between the left and right edges of the block'
       .number 'ground.max_height_diff'
+      .describe 'ground.max_height_diff', 'The height unit difference between two adjacent ground segments'
+      .number 'ground.max_segment_width'
+      .describe 'ground.max_segment_width', 'The number of ground segments wide the widest a single ground segment can be'
       .number 'wall.width'
       .string 'wall.color'
       .describe 'wall.color', 'Can be either html color names or hex values'
+      .number 'wall.segments'
+      .describe 'wall.segments', 'The number of vertical pieces of wall between the ground and roof'
       .conflicts 'levels', 'l'
       .help 'help'
       .default
@@ -92,6 +98,7 @@
           fill_color:     '#888'
           segments:        24
           max_height_diff: 4
+          max_segment_width: 6
         step_count:
           text:
             align: 'center'
