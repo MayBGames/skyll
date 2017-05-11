@@ -23,6 +23,6 @@
 
         for step in path
           for g, i in step.ground
-            fill_segment step, i, g.height, @config.ground.fill_color
+            fill_segment step, i, g.thickness * @config.multiplier, @config.ground.fill_color
 
     module.exports = PngGround
