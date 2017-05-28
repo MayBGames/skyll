@@ -1,4 +1,3 @@
-    q      = require 'q'
     Madul = require 'madul'
 
     class Carver extends Madul
