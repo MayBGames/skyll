@@ -15,10 +15,10 @@
             tile = thickness: @config.roofer()
 
             if @my.y > prev?.y
-              @my.roof[i] = tile if prev?.ground[i].thickness != null
+              @my.roof[i] = tile if prev?.ground[i].thickness > 0
 
             else if (@my.y == prev?.y && @my.y < next.y) ||
-                     next.ground[i].thickness != null       ||
+                     next.ground[i].thickness > 0        ||
                      next.y == @my.y
               @my.roof[i] = tile
         else
