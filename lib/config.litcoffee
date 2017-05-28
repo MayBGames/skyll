@@ -4,9 +4,8 @@
 
       deps: [ 'arguments', 'fs', 'path', 'node-uuid' ]
 
-      initialize: (params) =>
-        deferred = q.defer()
-        levels   = [ ]
+      post_initialize: =>
+        levels = [ ]
 
         process.env.MADUL_LOG_LEVEL = if @arguments?.verbosity? then @arguments.verbosity else 3
 
@@ -55,7 +54,7 @@
           @width  = @width  * @multiplier
           @height = @height * @multiplier
 
-          super().then => deferred.resolve @
+            @done()
 
         deferred.promise
 

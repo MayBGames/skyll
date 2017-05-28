@@ -7,18 +7,9 @@
 
       @ctx: undefined
 
-      initialize: (params) =>
-        deferred = q.defer()
-
-        super()
-          .then =>
-            @initialize_rendering_context()
-
-            deferred.resolve @
-
-        deferred.promise
-
-      initialize_rendering_context: => JsonRenderer.ctx = [ ]
+      post_initialize: =>
+        JsonRenderer.ctx = [ ]
+        @done()
 
       render: (path) => @do_render JsonRenderer.ctx, path
 
@@ -29,7 +20,6 @@
           if err?
             @fail err
           else
-            @initialize_rendering_context()
             @done 'Persisted', location: location
 
     module.exports = JsonRenderer

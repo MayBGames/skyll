@@ -7,8 +7,7 @@
       render_pipeline: [ ]
       renderers:       [ ]
 
-      initialize: (params) =>
-        deferred = q.defer()
+      post_initialize: =>
 
         super().then =>
           for p in @config.pipeline

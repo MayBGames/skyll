@@ -7,23 +7,15 @@
       @draw_to: undefined
       @ctx:     undefined
 
-      initialize: (params) =>
-        deferred = q.defer()
+      post_initialize: =>
+        unless PngRenderer.draw_to
+          width  = @config.width  * @config.grid[0].length
+          height = @config.height * @config.grid.length
 
-        super()
-          .then =>
-            @initialize_drawing_context()
+          PngRenderer.draw_to = new @canvas width, height
+          PngRenderer.ctx     = PngRenderer.draw_to.getContext '2d'
 
-            deferred.resolve @
-
-        deferred.promise
-
-      initialize_drawing_context: =>
-        width  = @config.width  * @config.grid[0].length
-        height = @config.height * @config.grid.length
-
-        PngRenderer.draw_to = new @canvas width, height
-        PngRenderer.ctx     = PngRenderer.draw_to.getContext '2d'
+        @done()
 
       render: (path, level_name) =>
         location = @path.join __dirname, '..', '..', '..', 'output', "#{level_name}.json"
@@ -33,9 +25,7 @@
       flush: (level_name) =>
         stream = @fs.createWriteStream @path.join __dirname, '..', '..', '..', 'output', "#{level_name}.png"
 
-        stream.on 'finish', =>
-          @initialize_drawing_context()
-          @done 'Persisted', location: level_name
+        stream.on 'finish', => @done 'Persisted', location: level_name
 
         PngRenderer.draw_to.createPNGStream().pipe stream
 
