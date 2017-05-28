@@ -1,13 +1,12 @@
-    Module = require './module'
     q      = require 'q'
     argv   = require './arguments'
     path   = require 'path'
     fs     = require 'fs'
     uuid   = require 'node-uuid'
+    Madul = require 'madul'
 
-    process.env.MADUL_LOG_LEVEL = if argv?.verbosity? then argv.verbosity else 3
+    class Config extends Madul
 
-    class Config extends Module
 
       initialize: (params) =>
         deferred = q.defer()

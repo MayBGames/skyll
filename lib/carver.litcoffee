@@ -1,7 +1,7 @@
-    Module = require './module'
     q      = require 'q'
+    Madul = require 'madul'
 
-    class Carver extends Module
+    class Carver extends Madul
       deps: [ 'config' ]
 
       starting_row: 0

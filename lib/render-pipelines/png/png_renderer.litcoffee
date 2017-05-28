@@ -1,7 +1,7 @@
-    Module = require '../../module'
     q      = require 'q'
+    Madul = require 'madul'
 
-    class PngRenderer extends Module
+    class PngRenderer extends Madul
       deps: [ 'fs', 'canvas', 'path', 'config' ]
       pub:  [ 'render', 'flush' ]
 

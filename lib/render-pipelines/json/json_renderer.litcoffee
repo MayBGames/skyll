@@ -1,8 +1,8 @@
-    Module = require '../../module'
     q      = require 'q'
+    Madul = require 'madul'
 
-    class JsonRenderer extends Module
       deps: [ 'fs', 'canvas', 'path', 'config' ]
+    class JsonRenderer extends Madul
       pub:  [ 'flush' ]
 
       @ctx: undefined

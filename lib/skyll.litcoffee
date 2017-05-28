@@ -1,8 +1,8 @@
-    Module = require './module'
     q      = require 'q'
+    Madul = require 'madul'
 
-    class Skyll extends Module
       deps: [ 'q', 'config', 'carver', 'async' ]
+    class Skyll extends Madul
       pub:  [ 'craft' ]
 
       render_pipeline: [ ]
