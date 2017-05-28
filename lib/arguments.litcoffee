@@ -77,6 +77,16 @@
       .describe 'wall.color', 'Can be either html color names or hex values'
       .number 'wall.segments'
       .describe 'wall.segments', 'The number of vertical pieces of wall between the ground and roof'
+      .string 'db.user'
+      .describe 'The username used when connecting to a database'
+      .string 'db.password'
+      .describe 'The password used when connecting to a database (may be blank)'
+      .string 'db.host'
+      .describe 'The hostname used when connecting to a database'
+      .number 'db.port'
+      .describe 'The port number used when connecting to a database'
+      .string 'db.name'
+      .describe 'The name of the database to connect to'
       .conflicts 'levels', 'l'
       .help 'help'
       .default
@@ -86,12 +96,13 @@
         width:      24
         height:     24
         multiplier: 4
-        # pipeline:   [ 'json_blocks', 'json_ground', 'json_walls' ]
-        # pipeline:   [ 'png_blocks', 'png_walls', 'png_ground', 'png_step_count' ]
-        pipeline: [
-          [ 'json_blocks', 'json_ground', 'json_walls' ]
-          [ 'png_blocks',  'png_ground',  'png_walls', 'png_roof', 'png_step_count' ]
-        ]
+        pipeline:   [ 'json_blocks', 'json_ground', 'json_walls', 'json_platforms' ]
+        # pipeline:   [ 'png_blocks', 'png_walls', 'png_ground', 'png_platforms', 'png_step_count' ]
+        # pipeline: [
+        #   [ 'json_blocks',   'json_ground', 'json_walls', 'json_platforms' ]
+        #   [ 'png_blocks',    'png_ground',  'png_walls', 'png_roof', 'png_platforms', 'png_step_count' ]
+        #   [ 'postgres_grid', 'postgres_blocks', 'postgres_ground' ]
+        # ]
         block:
           fill_color: 'white'
         ground:
@@ -106,7 +117,7 @@
         wall:
           width: 1
           color: '#666'
-          segments: 24
+          segments: 48
       .epilogue '© Bryan Maynard 2016'
       .wrap 120
       .argv
