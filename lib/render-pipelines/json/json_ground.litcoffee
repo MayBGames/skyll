@@ -18,7 +18,7 @@
               j = 0
 
               while j < segment.width
-                ctx[i - 1].ground[s + j++].thickness = null
+                ctx[i - 1].ground[s + j++].thickness = 0
 
               seg = @config.grounder direction: 'FAKE', i, path, s, ctx[i].ground
 
