@@ -22,10 +22,10 @@
         DOWN:  3
 
       clear_state: =>
-        @row  = @starting_row
-        @col  = 0
+        @row = @starting_row
+        @col = 0
 
-        @farthest_right     = row: @row, col: 0
+        @farthest_right     = row: @row, col: @col
         @previous_direction = undefined
 
         @steps          = 0
