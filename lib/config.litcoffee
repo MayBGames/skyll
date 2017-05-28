@@ -1,43 +1,42 @@
-    q      = require 'q'
-    argv   = require './arguments'
-    path   = require 'path'
-    fs     = require 'fs'
-    uuid   = require 'node-uuid'
     Madul = require 'madul'
 
     class Config extends Madul
 
+      deps: [ 'arguments', 'fs', 'path', 'node-uuid' ]
 
       initialize: (params) =>
         deferred = q.defer()
         levels   = [ ]
 
-        if params?.location?
-          config = params.location
-        else if argv.conf?
-          config = argv.conf
+        process.env.MADUL_LOG_LEVEL = if @arguments?.verbosity? then @arguments.verbosity else 3
+
+        if @arguments.conf?
+          config = @arguments.conf
         else
-          config = path.join __dirname, '..', '.skyll.conf.js'
+          config = @path.join __dirname, '..', '.skyll.conf.js'
 
 
-        if argv?._?.length > 0
+        if @arguments?._?.length > 0
           levels = levels.concat argv._
-        else if argv?.l?
+        else if @arguments?.l?
           for level in [0...argv.l]
-            levels.push uuid.v4()
-        else if argv?.levels? == false
+            levels.push @node_uuid.v4()
+        else if @arguments?.levels? == false
           levels.push new Date().toString()
 
-        for key, val of argv
+        for key, val of @arguments
           if key.length > 2 && typeof val != 'undefined'
             if key == 'levels'
               levels = levels.concat val
             else
-              @[key] = val
+              if typeof val == 'object' && val != null && val.length? == false
+                @dive_deeper key, val, @
+              else
+                @[key] = val
 
-        fs.stat config, (err) =>
+        @fs.stat config, (err) =>
           if err?
-            return deferred.reject @error 'DOES NOT EXIST', file: config
+            @fail 'DOES NOT EXIST', file: config
           else
             for key, val of require config
               if key == 'levels'
