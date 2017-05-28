@@ -1,21 +1,18 @@
     `#! /usr/bin/env node
     `
 
-    Config = require './config'
+    Skyll = require './skyll'
+    next  = 0
 
-    new Config()
+    new Skyll()
       .initialize()
-      .then (config) ->
-        Skyll = require './skyll'
-        next  = 0
+      .then (mod) ->
+        levels = mod.config.levels
 
-        new Skyll()
-          .initialize starting_row: Math.floor config.grid.length / 2
-          .then (mod) ->
-            render = (level) ->
-              mod.craft level
-                .then ->
-                  console.log 'finished rendering level', next
-                  render config.levels[next] if ++next < config.levels.length
+        render = (level) ->
+          mod.craft level
+            .then ->
+              console.log 'finished rendering level', next
+              render levels[next] if ++next < levels.length
 
-            render config.levels[next]
+        render levels[next]
