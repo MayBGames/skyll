@@ -43,28 +43,26 @@
                   levels.push new Date(Date.now() - (((val - 1) - level) * 1000)).toString()
               else
                 if typeof val == 'object' && val != null && val.length? == false
-                  @dive_deeper val, @
+                  @dive_deeper key, val, @
                 else
                   @[key] = val
 
-          levels.push new Date().toString() if levels.length == 0
+            levels.push new Date().toString() if levels.length == 0
 
-          @levels = levels
-          @grid   = ((false for j in [0..@columns]) for i in [0..@rows])
-          @width  = @width  * @multiplier
-          @height = @height * @multiplier
+            @levels = levels
+            @grid   = ((false for j in [0..@columns]) for i in [0..@rows])
+            @width  = @width  * @multiplier
+            @height = @height * @multiplier
 
             @done()
 
-        deferred.promise
-
-      dive_deeper: (obj, context) =>
+      dive_deeper: (prop, obj, context) =>
         for key, val of obj
-          context[key] = { } unless context[key]?
+          context[prop] = { } unless context[prop]?
 
           if typeof val == 'object' && val != null && val.length? == false
-            @dive_deeper val, context[key]
+            @dive_deeper key, val, context[prop]
           else
-            context[key] = val
+            context[prop][key] = val
 
     module.exports = Config
