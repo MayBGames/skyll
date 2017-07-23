@@ -2,7 +2,10 @@
 
     class JsonWalls extends JsonRenderer
 
-      draw_roof: =>
+      args:      [ 'ground', 'wall', 'multiplier' ]
+      delegates: [ 'roofer', 'waller' ]
+
+      _draw_roof: =>
         idx = @ctx.indexOf(@my) + 1
 
         if @ctx[idx]?
@@ -12,7 +15,7 @@
           @my.roof = [ ]
 
           for segment, i in @my.ground
-            tile = thickness: @config.roofer()
+            tile = thickness: @roofer @ground, @multiplier
 
             if @my.y > prev?.y
               @my.roof[i] = tile if prev?.ground[i].thickness > 0
@@ -23,21 +26,21 @@
               @my.roof[i] = tile
         else
           @my.roof = for segment in @my.ground
-            thickness: @config.roofer()
+            thickness: @roofer @ground, @multiplier
 
-      draw_left_wall: =>
-        @my.left_wall = for i in [0...@config.wall.segments]
-          thickness: @config.waller()
+      _draw_left_wall: =>
+        @my.left_wall = for i in [0...@wall.segments]
+          thickness: @waller @ground
 
-      draw_right_wall: =>
-        @my.right_wall = for i in [0...@config.wall.segments]
-          thickness: @config.waller()
+      _draw_right_wall: =>
+        @my.right_wall = for i in [0...@wall.segments]
+          thickness: @waller @ground
 
-      draw_walls: =>
-        @draw_left_wall()
-        @draw_right_wall()
+      _draw_walls: =>
+        @_draw_left_wall()
+        @_draw_right_wall()
 
-      do_render: (drawing_context, path) =>
+      render: (drawing_context, path, level_name, done) ->
         @ctx = drawing_context
 
         for step, i in path
@@ -47,30 +50,32 @@
             @my  = @ctx[i - 1]
             prev = path[i - 1].direction
 
-            @draw_roof()
+            @_draw_roof()
 
             switch dir
               when 'RIGHT', 'LEFT'
-                @draw_left_wall()  if dir == 'RIGHT' && (prev == undefined || prev == 'UP' || prev == 'DOWN')
-                @draw_right_wall() if dir == 'LEFT'  && (prev == 'UP' || prev == 'DOWN')
+                @_draw_left_wall()  if dir == 'RIGHT' && (prev == undefined || prev == 'UP' || prev == 'DOWN')
+                @_draw_right_wall() if dir == 'LEFT'  && (prev == 'UP' || prev == 'DOWN')
               when 'UP', 'DOWN'
                 if prev == undefined || prev == 'UP' || prev == 'DOWN'
-                  @draw_walls()
+                  @_draw_walls()
                 else
-                  @draw_left_wall()  if prev == 'LEFT'
-                  @draw_right_wall() if prev == 'RIGHT'
+                  @_draw_left_wall()  if prev == 'LEFT'
+                  @_draw_right_wall() if prev == 'RIGHT'
 
           if i == path.length - 1
             @my = @ctx[i]
 
-            @draw_roof()
+            @_draw_roof()
 
             switch dir
               when 'RIGHT', 'LEFT'
-                @draw_right_wall() if dir == 'RIGHT'
-                @draw_left_wall()  if dir == 'LEFT'
+                @_draw_right_wall() if dir == 'RIGHT'
+                @_draw_left_wall()  if dir == 'LEFT'
 
               when 'UP', 'DOWN'
-                @draw_walls()
+                @_draw_walls()
+
+        done()
 
     module.exports = JsonWalls

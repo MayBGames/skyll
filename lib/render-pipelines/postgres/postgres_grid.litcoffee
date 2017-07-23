@@ -2,13 +2,13 @@
 
     class PostgresGrid extends PostgresRenderer
 
-      do_render: (grid_name, path) =>
+      render: (_, __, grid_name, done, exception) ->
         query = @sql_bricks_postgres
           .insert 'grid', name: grid_name
           .toParams()
 
-        @postgres().none  query.text, query.values
-          .then        => @done()
-          .catch (err) => @fail err
+        @_postgres().none query.text, query.values
+          .then  done
+          .catch exception
 
     module.exports = PostgresGrid

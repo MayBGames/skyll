@@ -1,3 +1,5 @@
 gulp compile
 npm link
-skyll -vvvv
+npm link madul
+npm link khaaanfig
+SKYLL_MADUL_LOGGING=true skyll

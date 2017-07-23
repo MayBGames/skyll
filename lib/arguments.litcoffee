@@ -3,42 +3,28 @@
       .example '$0',
         "Creates a level with default row and column counts,
          the default size and multiplier for each cell,
-         an auto-generated name,
-         and logging set to default verbosity\n"
-      .example '$0 -vvvvvvvv',
-        "Creates a level with default row and column counts,
-         the default size and multiplier for each cell,
-         an auto-generated name,
-         and logging set to verbosity level 8 (max)\n"
+         and an auto-generated name\n"
       .example '$0 -w 20 -h 20',
         "Creates a level with default row and column counts,
          the cells 20 units wide, 20 units high,
          expanded by the default multiplier,
-         an auto-generated name,
-         and logging set to default verbosity\n"
+         an auto-generated name\n"
       .example '$0 -w 10 -h 10 -x 4',
         "Creates a level with default row and column counts,
          40 x 40 unit cells,
-         an auto-generated name,
-         and logging set to default verbosity\n"
+         an auto-generated name\n"
       .example '$0 lvl1 lvl2',
         "Creates two levels; named lvl1 and lvl2 -
          each with default row and column counts,
-         the default size and multiplier for each cell,
-         and logging set to default verbosity\n"
+         the default size and multiplier for each cell\n"
       .example '$0 --levels one two three',
         "Creates three levels; named one, two, and three -
          each with default row and column counts,
-         the default size and multiplier for each cell,
-         and logging set to default verbosity\n"
+         the default size and multiplier for each cell\n"
       .example '$0 -l10',
         "Creates ten auto-named levels -
          each with default row and column counts,
-         the default size and multiplier for each cell,
-         and logging set to default verbosity\n"
-      .count 'verbosity'
-      .alias 'v', 'verbosity'
-      .describe 'v', 'Level of logging verbosity: 1 - 8'
+         the default size and multiplier for each cell\n"
       .alias 'r', 'rows'
       .describe 'r', 'Number of rows for map'
       .alias 'c', 'columns'
@@ -77,32 +63,21 @@
       .describe 'wall.color', 'Can be either html color names or hex values'
       .number 'wall.segments'
       .describe 'wall.segments', 'The number of vertical pieces of wall between the ground and roof'
-      .string 'db.user'
-      .describe 'The username used when connecting to a database'
-      .string 'db.password'
-      .describe 'The password used when connecting to a database (may be blank)'
-      .string 'db.host'
-      .describe 'The hostname used when connecting to a database'
-      .number 'db.port'
-      .describe 'The port number used when connecting to a database'
-      .string 'db.name'
-      .describe 'The name of the database to connect to'
       .conflicts 'levels', 'l'
       .help 'help'
       .default
-        verbosity:  3
         rows:       15
         columns:    50
         width:      24
         height:     24
         multiplier: 4
-        pipeline:   [ 'json_blocks', 'json_ground', 'json_walls', 'json_platforms' ]
-        # pipeline:   [ 'png_blocks', 'png_walls', 'png_ground', 'png_platforms', 'png_step_count' ]
-        # pipeline: [
-        #   [ 'json_blocks',   'json_ground', 'json_walls', 'json_platforms' ]
-        #   [ 'png_blocks',    'png_ground',  'png_walls', 'png_roof', 'png_platforms', 'png_step_count' ]
-        #   [ 'postgres_grid', 'postgres_blocks', 'postgres_ground' ]
-        # ]
+        # pipeline:   [ 'skyll#json_blocks', 'skyll#json_ground', 'skyll#json_walls', 'skyll#json_platforms' ]
+        # pipeline:   [ 'skyll#png_blocks', 'skyll#png_walls', 'skyll#png_ground', 'skyll#png_platforms', 'skyll#png_step_count' ]
+        pipeline: [
+          [ '.json_blocks',   '.json_ground', '.json_walls', '.json_platforms' ]
+          # [ 'skyll#png_blocks',    'skyll#png_ground',  'skyll#png_walls',  'skyll#png_roof', 'skyll#png_platforms', 'skyll#png_step_count' ]
+          [ '.postgres_grid', '.postgres_blocks', '.postgres_ground' ]
+        ]
         block:
           fill_color: 'white'
         ground:

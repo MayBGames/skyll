@@ -3,33 +3,33 @@
     DB     = undefined
     DIRECT = undefined
 
+    CONFIG_FILE = 'postgres.conf.json'
+
     class PostgresRenderer extends Madul
-      deps: [ 'sql-bricks-postgres', 'pg-promise', 'config', 'fs', 'path', 'async' ]
-      pub:  [ 'render' ]
+      deps: [ '~khaaanfig -> conf = load_connection_details', '~sql-bricks-postgres', '~pg-promise', 'fs', 'path', '~async' ]
 
-      postgres: => DB
+      _postgres: => DB
 
-      post_initialize: =>
-        if DB == undefined
-          user   = "#{@config.db.user}:#{@config.db.password}"
-          server = "#{@config.db.host}:#{@config.db.port}"
+      load_connection_details: (done, fail) ->
+        @conf.load_file @path.join process.cwd(), CONFIG_FILE
+          .then done
+          .catch =>
+            @warn 'file-not-found', CONFIG_FILE, fail
 
-          connection_string = "pg://#{user}@#{server}/#{@config.db.name}"
+      $connect: (done, fail) ->
+        user   = "#{@conf.user}:#{@conf.password}"
+        server = "#{@conf.host}:#{@conf.port}"
 
-          DB = @pg_promise(promiseLib: require 'q') connection_string
+        connection_string = "pg://#{user}@#{server}/#{@conf.name}"
 
-          DB.connect direct: true
-            .then (shared_connection_object) =>
-              DIRECT = shared_connection_object
+        DB = @pg_promise(promiseLib: require 'q') connection_string
 
-              @done()
-        else
-          @done()
+        DB.connect direct: true
+          .then (shared_connection_object) =>
+            DIRECT = shared_connection_object
 
-      render: (path, grid_name) =>
-        location = @path.join __dirname, '..', '..', '..', 'output', "#{grid_name}.json"
-
-        @fs.readFile location, 'utf8', (err, data) =>
-          @done @do_render grid_name, JSON.parse data
+            done()
+          .catch (err) =>
+            @warn 'db-connect-failure', err, fail
 
     module.exports = PostgresRenderer

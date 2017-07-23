@@ -29,7 +29,7 @@
     "gulp-coveralls": "^0.1.0",
     "gulp-eslint": "^3.0.1",
     "gulp-exclude-gitignore": "^1.0.0",
-    "gulp-hub": "frankwallis/gulp-hub#4.1.0",
+    "gulp-hub": "github:frankwallis/gulp-hub#4.1.0",
     "gulp-istanbul": "^1.0.0",
     "gulp-line-ending-corrector": "^1.0.1",
     "gulp-mocha": "^3.0.1",
@@ -51,14 +51,16 @@
   "license": "MIT",
   "dependencies": {
     "async": "^2.4.0",
-    "canvas": "^1.6.2",
-    "madul": "^1.0.2",
+    "khaaanfig": "^1.0.0",
+    "madul": "^1.6.0",
+    "magnus": "^2.0.0",
     "microtime": "^2.1.2",
     "node-uuid": "^1.4.8",
     "pg-promise": "^5.7.0",
     "prettyjson": "^1.2.1",
     "q": "^1.4.1",
     "sql-bricks-postgres": "^0.4.3",
+    "terminal-kit": "^1.8.10",
     "winston": "^2.3.0",
     "yargs": "^6.6.0"
   }

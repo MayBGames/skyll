@@ -2,13 +2,12 @@
 
     class JsonBlocks extends JsonRenderer
 
-      do_render: (ctx, path) =>
-        width  = @config.width
-        height = @config.height
-
+      render: (ctx, path, level_name, done) ->
         for step in path
           ctx.push
             x: step.col
             y: step.row
+
+        done()
 
     module.exports = JsonBlocks

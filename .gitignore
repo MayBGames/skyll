@@ -4,4 +4,5 @@ dist
 .tmp
 output/*
 docs/_site
-.*.conf.js
+*.conf.json
+*.delegates.js

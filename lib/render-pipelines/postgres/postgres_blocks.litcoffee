@@ -2,7 +2,7 @@
 
     class PostgresBlocks extends PostgresRenderer
 
-      do_render: (grid_name, path) =>
+      render: (path, _, grid_name, done, exception) ->
         query = @sql_bricks_postgres
           .select 'id'
           .from   'grid'
@@ -10,8 +10,7 @@
           .limit  1
           .toParams()
 
-        @postgres().one query.text, query.values
-          .catch (err)  => @fail err
+        @_postgres().one query.text, query.values
           .then  (grid) =>
             @async.each path, (item, next) =>
               properties =
@@ -24,9 +23,10 @@
                 .insert 'block', properties
                 .toParams()
 
-              @postgres().none add.text, add.values
-                .then        => next()
-                .catch (err) => @fail err
-            , => @done()
+              @_postgres().none add.text, add.values
+                .then  next
+                .catch exception
+            , done
+          .catch exception
 
     module.exports = PostgresBlocks

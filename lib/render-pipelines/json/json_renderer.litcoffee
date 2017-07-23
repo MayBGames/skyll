@@ -1,25 +1,15 @@
     Madul = require 'madul'
-    q     = require 'q'
 
     class JsonRenderer extends Madul
-      deps: [ 'fs', 'path', 'config' ]
-      pub:  [ 'flush' ]
+      deps: [ 'fs', 'path' ]
 
-      @ctx: undefined
-
-      post_initialize: =>
-        JsonRenderer.ctx = [ ]
-        @done()
-
-      render: (path) => @do_render JsonRenderer.ctx, path
-
-      flush: (level) =>
+      flush: (ctx, level, done, fail) ->
         location = @path.join __dirname, '..', '..', '..', 'output', "#{level}.json"
 
-        @fs.writeFile location, JSON.stringify(JsonRenderer.ctx), 'utf8', (err) =>
+        @fs.writeFile location, JSON.stringify(ctx), 'utf8', (err) =>
           if err?
-            @fail err
+            fail err
           else
-            @done 'Persisted', location: location
+            done location
 
     module.exports = JsonRenderer

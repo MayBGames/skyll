@@ -8,10 +8,7 @@ gulp.registry(hub);
 gulp.task('default', gulp.series(
   'clean',
   'brew-code',
-  'brew-tests',
-  'pre-test',
-  'run-tests',
-  'coveralls'
+  'execute'
 ));
 
 gulp.task('compile', gulp.series('clean', 'brew-code'));

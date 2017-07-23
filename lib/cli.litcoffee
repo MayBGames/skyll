@@ -1,18 +1,64 @@
     `#! /usr/bin/env node
     `
 
-    Skyll = require './skyll'
-    next  = 0
+    if process.env.SKYLL_MADUL_LOGGING == 'true'
+      require 'magnus'
+
+    Skyll = require './index'
+    args  = require './arguments'
+    uuid  = require 'node-uuid'
+    fs    = require 'fs'
+    path  = require 'path'
+
+    EXTRACT = [
+      'rows'
+      'columns'
+      'width'
+      'height'
+      'multiplier'
+      'pipeline'
+      'block'
+      'ground'
+      'step_count'
+      'wall'
+    ]
 
     new Skyll()
-      .initialize()
+      .initialize args
       .then (mod) ->
-        levels = mod.config.levels
+        levels = [ ]
 
-        render = (level) ->
-          mod.craft level
-            .then ->
-              console.log 'finished rendering level', next
-              render levels[next] if ++next < levels.length
+        if args._?.length > 0
+          levels = levels.concat argv._
+        else if args.l?
+          for level in [0...argv.l]
+            levels.push uuid.v4()
+        else if Array.isArray args.levels
+          for level in args.levels
+            levels.push level
+        else if args.levels? == false
+          levels.push new Date().toString()
 
-        render levels[next]
+        if args.delegates?
+          location = args.delegates
+        else
+          location = path.join process.cwd(), 'skyll.delegates.js'
+
+        fs.stat location, (err) ->
+          if err?
+            mod.warn 'file-not-found', location
+          else
+            delegates = require location
+            next      = 0
+            input     = { }
+
+            for own key, val of args
+              input[key] = val if EXTRACT.includes key
+
+            mod.setup_rendering_pipeline args.pipeline
+              .then ->
+                render = (level) ->
+                  mod.craft level, input, delegates
+                    .then -> render levels[next] if ++next < levels.length
+
+                render levels[next]
