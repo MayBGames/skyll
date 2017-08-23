@@ -1,6 +1,8 @@
     `#! /usr/bin/env node
     `
 
+    Madul = require 'madul'
+
     if process.env.SKYLL_MADUL_LOGGING == 'true'
       require 'magnus'
 
@@ -51,14 +53,32 @@
             delegates = require location
             next      = 0
             input     = { }
+            pipe      = [ ]
 
             for own key, val of args
               input[key] = val if EXTRACT.includes key
 
-            mod.setup_rendering_pipeline args.pipeline
-              .then ->
-                render = (level) ->
-                  mod.craft level, input, delegates
-                    .then -> render levels[next] if ++next < levels.length
 
-                render levels[next]
+            Madul.DUMMY pipe, (dum) ->
+              dum.render_pipeline = [ ]
+
+              for p in input.pipeline
+                if Array.isArray p
+                  new_pipeline = for q in p
+                    dum[Madul.PARSE_SPEC(q).ref]
+
+                  dum.render_pipeline.push new_pipeline
+                else
+                  dum.render_pipeline.push dum[Madul.PARSE_SPEC(p).ref]
+
+              args = { }
+              name = new Date().toString()
+
+              for own key, val of input
+                args[key] = val if EXTRACT.includes key
+
+              render = (level) ->
+                mod.craft level, input, dum.render_pipeline, delegates
+                  .then -> render levels[next] if ++next < levels.length
+
+              render levels[next]
