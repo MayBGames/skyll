@@ -1,7 +1,7 @@
     Madul = require 'madul'
 
     class Skyll extends Madul
-      deps: [ 'carver', 'async', 'path' ]
+      deps: [ '~volor', 'async', 'path' ]
 
       _do_flush: (step, ctx, level_name, exception, next) =>
         if step.flush?
@@ -13,8 +13,8 @@
         else
           next()
 
-      _do_render: (ctx, step, path, level_name, exception, next) =>
-        step.render ctx, path, level_name
+      _do_render: (ctx, step, level_name, exception, next) =>
+        step.render ctx, level_name
           .then  next
           .catch (err) =>
             console.log 'rendering', err
@@ -29,28 +29,24 @@
         thing
 
       craft: (level_name, args, pipeline, delegates, done, exception) ->
-        ctx = [ ]
+        map = @volor()
 
-        @carver.carve_path delegates.pathfinder, args.rows, args.columns
-          .then (path) =>
-            console.log 'STARTING RENDER'
-            @async.eachOfSeries pipeline, (pipe, i, next) =>
-              if Array.isArray pipe
-                @async.eachSeries pipe, (step, nxt) =>
-                  decorated = @_decorate step, args, delegates
+        @async.eachOfSeries pipeline, (pipe, i, next) =>
+          if Array.isArray pipe
+            @async.eachSeries pipe, (step, nxt) =>
+              decorated = @_decorate step, args, delegates
 
-                  @_do_render ctx, decorated, path, level_name, exception(nxt), nxt
-                , =>
-                  @_do_flush pipeline[i][0], ctx, level_name, exception(next), => next()
+              @_do_render map, decorated, level_name, exception(nxt), nxt
+            , =>
+              @_do_flush pipeline[i][0], map, level_name, exception(next), => next()
+          else
+            decorated = @_decorate pipe, args, delegates
+
+            @_do_render map, decorated, level_name, exception(next), =>
+              if i == pipeline.length - 1
+                @_do_flush decorated, map, level_name, exception(next), => next()
               else
-                decorated = @_decorate pipe, args, delegates
-
-                @_do_render ctx, decorated, path, level_name, exception(next), =>
-                  if i == pipeline.length - 1
-                    @_do_flush decorated, ctx, level_name, exception(next), => next()
-                  else
-                    next()
-            , done
-          .catch exception
+                next()
+        , done
 
     module.exports = Skyll
