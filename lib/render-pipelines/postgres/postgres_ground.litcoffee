@@ -1,58 +1,70 @@
     PostgresRenderer = require './postgres_renderer'
 
+    DB = undefined
+
     class PostgresGround extends PostgresRenderer
 
-      args: [ 'wall' ]
+      delegates: [
+        'ground'
+        'stairs_up'
+      ]
 
-      render: (path, _, grid_name, done, exception) ->
-        grid_query = @sql_bricks_postgres
-          .select 'id'
-          .from   'grid'
-          .where  name: grid_name
-          .limit  1
+      $register_db_instance: (done) ->
+        DB = @_postgres()
+        done()
+
+      render: (path, grid_name, done, exception) ->
+        grid_save_query = @sql_bricks_postgres
+          .insert 'grid', name: grid_name
+          .returning 'id'
           .toParams()
 
-        @_postgres().one grid_query.text, grid_query.values
-          .then (grid) =>
-            piece_query = @sql_bricks_postgres
-              .select 'id'
-              .from   'piece'
-              .where  mode: 'GROUND'
-              .limit  1
-              .toParams()
+        DB.one grid_save_query.text, grid_save_query.values
+          .then (g) =>
+            @async.each path, (p, next) =>
+              block_save_query = @sql_bricks_postgres
+                .insert 'block',
+                  grid:       g.id
+                  size:       "(#{p.width.actual}, #{p.height.actual})"
+                  properties: p.props
+                  direction:  p.direction
+                .returning 'id'
+                .toParams()
 
-            @_postgres().one piece_query.text, piece_query.values
-              .then (piece) =>
-                @async.each path, (item, all_inserted) =>
-                  block_query = @sql_bricks_postgres
-                    .select 'id'
-                    .from   'block'
-                    .where
-                      grid:  grid.id
-                      index: path.indexOf item
-                    .limit  1
-                    .toParams()
+              DB.one block_save_query.text, block_save_query.values
+                .then (b) =>
+                  @async.each p.landscape.nodes, (node, nxt) =>
+                    node_save_query = @sql_bricks_postgres
+                      .insert 'node',
+                        block:    b.id
+                        kind:     node.type
+                        size:     "(#{node.width}, #{node.height})"
+                        location: "(#{node.x}, #{node.y})"
+                      .returning 'id'
+                      .toParams()
 
-                  @_postgres().one block_query.text, block_query.values
-                    .then (block) =>
-                      @async.each item.ground, (ground, inserted) =>
-                        properties =
-                          x:      item.ground.indexOf ground
-                          y:      @wall.segments - ground.thickness
-                          block:  block.id
-                          piece:  piece.id
-                          volume: x: 1, y: ground.thickness, z: 1
+                    DB.one node_save_query.text, node_save_query.values
+                      .then (n) =>
+                        faces  = @[node.type] node
+                        params =
+                          node:        n.id
+                          left_face:   faces.left
+                          top_face:    faces.top
+                          right_face:  faces.right
+                          bottom_face: faces.bottom
+                          front_face:  faces.front
+                          back_face:   faces.back
 
-                        add = @sql_bricks_postgres
-                          .insert 'point', properties
+                        geom_query = @sql_bricks_postgres
+                          .insert 'geometry', params
                           .toParams()
 
-                        @_postgres().none add.text, add.values
-                          .catch exception
-                          .then  inserted
-                      , all_inserted
-                    .catch exception
-                , done
-              .catch exception
+                        DB.none geom_query.text, geom_query.values
+                          .then => nxt()
+                          .catch exception nxt
+                      .catch exception nxt
+                  , => next()
+                .catch exception next
+            , => done()
 
     module.exports = PostgresGround
