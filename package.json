@@ -60,7 +60,7 @@
     "prettyjson": "^1.2.1",
     "q": "^1.4.1",
     "sql-bricks-postgres": "^0.4.3",
-    "terminal-kit": "^1.8.10",
+    "terminal-kit": "^1.13.7",
     "winston": "^2.3.0",
     "yargs": "^6.6.0"
   }
