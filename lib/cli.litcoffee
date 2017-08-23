@@ -44,7 +44,7 @@
         if args.delegates?
           location = args.delegates
         else
-          location = path.join process.cwd(), 'skyll.delegates.js'
+          location = path.join __dirname, 'delegates.js'
 
         fs.stat location, (err) ->
           if err?
