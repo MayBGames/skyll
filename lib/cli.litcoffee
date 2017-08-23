@@ -58,6 +58,12 @@
             for own key, val of args
               input[key] = val if EXTRACT.includes key
 
+            for p in input.pipeline
+              if Array.isArray p
+                for q in p
+                  pipe.push(q) unless pipe.includes q
+              else
+                pipe.push(p) unless pipe.includes p
 
             Madul.DUMMY pipe, (dum) ->
               dum.render_pipeline = [ ]
