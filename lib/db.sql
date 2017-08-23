@@ -1,47 +1,46 @@
-create type Mode as enum (
-  'GROUND',
-  'WALL',
-  'ROOF',
-  'OBSTACLE',
-  'COLLECTABLE',
-  'ENEMY',
-  'NPC',
-  'SPECIAL',
-  'DECORATION'
+create type NodeType as enum (
+  'ground',
+  'stairs_up'
 );
 
-create table piece (
-  id serial primary key,
-  name text not null unique,
-  mode Mode not null,
-  properties jsonb
+create type Direction as enum (
+  'right',
+  'left',
+  'up',
+  'down'
 );
-
-insert into piece (name, mode) values ('Ground', 'GROUND');
-insert into piece (name, mode) values ('Wall',   'WALL');
-insert into piece (name, mode) values ('Roof',   'ROOF');
 
 create table grid (
   id serial primary key,
   name text not null unique,
-  created timestamp default now()
+  created timestamp not null default now()
 );
 
 create table block (
   id serial primary key,
-  x integer not null,
-  y integer not null,
-  index integer not null,
   grid integer not null references grid (id),
-  constraint block_coord unique(grid, index, x, y)
+  size point not null,
+  properties text[ ],
+  direction Direction not null
 );
 
-create table point (
-  id serial primary key,
+create table node (
+  id serial not null primary key,
   block integer not null references block (id),
-  x integer not null,
-  y integer not null,
-  volume jsonb not null,
-  piece integer not null references piece (id),
-  constraint ground_coord unique(block, piece, x, y)
+  kind NodeType not null,
+  size point not null,
+  location point not null,
+  attributes jsonb
+);
+
+create table geometry (
+  id serial not null primary key,
+  node integer not null references node (id),
+  left_face integer[ ][ ] not null,
+  top_face integer[ ][ ] not null,
+  right_face integer[ ][ ] not null,
+  bottom_face integer[ ][ ] not null,
+  front_face integer[ ][ ] not null,
+  back_face integer[ ][ ] not null,
+  bezel integer[ ][ ]
 );
